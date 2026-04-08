@@ -293,25 +293,49 @@ const wasteProducts=[
 ];
 
 wasteProducts.forEach(p=>{
-const row=document.createElement("div");
-row.className="row";
 
-const name=document.createElement("div");
-name.innerText=p;
+const wrap=document.createElement("div");
+wrap.style.marginBottom="10px";
 
+/* ТЕГ (КНОПКА ПРОДУКТА) */
+const tag=document.createElement("div");
+tag.className="tag";
+tag.innerText=p;
+
+/* ИНПУТ */
 const input=document.createElement("input");
 input.type="number";
 input.placeholder="л";
-input.style.width="70px";
+input.style.width="80px";
+input.classList.add("hidden");
 
-input.oninput=()=>{
-if(input.value){state.waste[p]=input.value;}
-else{delete state.waste[p];}
+/* КЛИК ПО ПРОДУКТУ */
+tag.onclick=()=>{
+
+const isActive = tag.classList.toggle("active");
+input.classList.toggle("hidden");
+
+if(!isActive){
+delete state.waste[p];
+input.value="";
+}
+
 };
 
-row.appendChild(name);
-row.appendChild(input);
-wasteList.appendChild(row);
+/* ВВОД */
+input.oninput=()=>{
+if(input.value){
+state.waste[p]=input.value;
+}else{
+delete state.waste[p];
+}
+};
+
+wrap.appendChild(tag);
+wrap.appendChild(input);
+
+wasteList.appendChild(wrap);
+
 });
 
 /* ПОДСКАЗКИ */

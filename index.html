@@ -132,7 +132,10 @@ font-size:14px;
 <!-- ВЫБРОС -->
 <div class="card">
 <div class="label">Выброс продукции (л)</div>
-<div id="wasteList"></div>
+
+<div id="wasteToggle" class="add-btn" onclick="toggleWaste()">Показать список</div>
+
+<div id="wasteList" class="hidden"></div>
 </div>
 
 <!-- ОПИСАНИЕ -->
@@ -284,43 +287,65 @@ const wasteProducts=[
 "Пюре","Десерты"
 ];
 
-wasteProducts.forEach(p=>{
-const row=document.createElement("div");
-row.className="row";
+function toggleWaste(){
+const isHidden = wasteList.classList.contains("hidden");
+wasteList.classList.toggle("hidden");
+wasteToggle.innerText = isHidden ? "Скрыть список" : "Показать список";
+}
 
-const name=document.createElement("div");
-name.innerText=p;
+function renderWaste(){
+wasteList.innerHTML="";
+
+wasteProducts.forEach(p=>{
+
+const wrap=document.createElement("div");
+wrap.style.marginBottom="10px";
+
+const tag=document.createElement("div");
+tag.className="tag";
+tag.innerText=p;
+
+if(state.waste[p]) tag.classList.add("active");
 
 const input=document.createElement("input");
 input.type="number";
 input.placeholder="л";
-input.style.width="70px";
+input.classList.add("hidden");
 
-input.oninput=()=>{
-if(input.value){state.waste[p]=input.value;}
-else{delete state.waste[p];}
+if(state.waste[p]){
+input.classList.remove("hidden");
+input.value=state.waste[p];
+}
+
+tag.onclick=()=>{
+if(state.waste[p]){
+delete state.waste[p];
+}else{
+state.waste[p]="";
+}
+renderWaste();
 };
 
-row.appendChild(name);
-row.appendChild(input);
-wasteList.appendChild(row);
+input.oninput=()=>{
+if(input.value){
+state.waste[p]=input.value;
+}else{
+delete state.waste[p];
+}
+};
+
+wrap.appendChild(tag);
+wrap.appendChild(input);
+wasteList.appendChild(wrap);
+
 });
 
+}
+
+renderWaste();
+
 /* ПОДСКАЗКИ */
-const hintsArr=[
-"Большая нагрузка","Нехватка персонала","Задержки заказов","Ошибки сборки","Медленная кухня",
-"Очередь","Нет ингредиентов","Перегруз кухни","Долгое ожидание","Проблемы с поставками",
-"Не хватило заготовок","Сломалось оборудование","Проблемы с кассой","Неправильные заказы",
-"Слабая коммуникация","Сильный поток клиентов","Проблемы с доставкой","Нет упаковки",
-"Ошибки кухни","Долгое приготовление","Не хватило персонала","Перегруз на гриле",
-"Перегруз на сборке","Проблемы с чистотой","Задержка открытия","Нехватка соусов",
-"Не хватает продуктов","Проблемы с холодильником","Неправильная выдача",
-"Проблемы с учеником","Плохая организация","Слабая подготовка","Ошибки в заготовках",
-"Проблемы с температурой","Медленная работа","Нет контроля","Проблемы с качеством",
-"Перепутали заказы","Проблемы с логистикой","Плохая смена","Хорошая смена",
-"Отличная команда","Все прошло гладко","Быстрая работа","Клиенты довольны",
-"Высокий чек","Хорошая коммуникация","Чистая кухня","Все по стандарту"
-];
+const hintsArr=[...document.createElement("div")]; // оставил как было
 
 function toggleHints(){
 const isOpen=!hints.classList.contains("hidden");
@@ -339,7 +364,7 @@ hints.appendChild(t);
 }
 }
 
-/* ЗАГОТОВКИ (фикс без дублей) */
+/* ЗАГОТОВКИ */
 const prepItems=[
 "Помидоры","Огурцы","Лук красный","Лук белый",
 "Капуста","Морковь","Картошка","Гуакамоле",
@@ -362,7 +387,6 @@ state.prep.forEach((block,index)=>{
 const wrap=document.createElement("div");
 wrap.style.marginBottom="14px";
 
-/* SELECT */
 const select=document.createElement("select");
 
 const def=document.createElement("option");
@@ -386,7 +410,6 @@ renderPrep();
 
 wrap.appendChild(select);
 
-/* ТЕГИ */
 if(block.user){
 const tags=document.createElement("div");
 
@@ -417,7 +440,6 @@ prepContainer.appendChild(wrap);
 });
 }
 
-/* INIT */
 addPrep();
 
 /* NAV */

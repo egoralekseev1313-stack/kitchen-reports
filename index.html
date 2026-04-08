@@ -14,7 +14,7 @@ h2{text-align:center;margin:20px 0;}
 
 input,select,textarea{
 width:100%;padding:12px;border-radius:12px;border:none;
-background:#1f1f28;color:white;font-size:15px;margin-bottom:10px;
+background:#1f1f28;color:white;font-size:15px;box-sizing:border-box;margin-bottom:10px;
 }
 
 textarea{resize:none;height:90px;}
@@ -27,11 +27,21 @@ color:white;font-size:16px;margin-top:10px;
 
 .tag{
 display:inline-block;padding:6px 10px;background:#1f1f28;
-border-radius:10px;margin:4px;font-size:13px;cursor:pointer;
+border-radius:10px;margin:4px;font-size:13px;
 }
-.tag.active{background:#6d5dfc;}
 
+.tag.active{background:#6d5dfc;}
 .hidden{display:none;}
+
+.pin-box{display:flex;justify-content:center;gap:10px;margin:20px 0;}
+.pin-cell{width:50px;height:50px;border-radius:12px;border:2px solid #333;display:flex;align-items:center;justify-content:center;}
+.pin-dot{width:8px;height:8px;background:white;border-radius:50%;}
+
+.pin-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;justify-items:center;}
+.pin-btn{width:70px;height:70px;border-radius:50%;background:#1c1c24;display:flex;align-items:center;justify-content:center;font-size:20px;}
+
+.row{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.hints-toggle.active{background:#6d5dfc;}
 
 .add-btn{
 margin-top:10px;
@@ -39,38 +49,7 @@ background:#1f1f28;
 text-align:center;
 padding:10px;
 border-radius:10px;
-cursor:pointer;
-}
-
-/* ВЫБРОС */
-.waste-toggle{
-background:#1f1f28;
-padding:10px;
-border-radius:10px;
-text-align:center;
-margin-bottom:10px;
-cursor:pointer;
-}
-
-.waste-item{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:6px;
-}
-
-.waste-input{
-width:70px;
-padding:6px;
-border-radius:10px;
-background:#0f0f15;
-text-align:center;
-}
-
-/* BACK */
-.back-btn{
-background:#1f1f28;
-margin-top:10px;
+font-size:14px;
 }
 </style>
 </head>
@@ -78,24 +57,82 @@ margin-top:10px;
 <body>
 <div class="app">
 
+<!-- LOGIN -->
+<div id="login">
+<h2>Кто менеджер</h2>
+<button onclick="selectUser('Егор')">Егор</button>
+<button onclick="selectUser('Стас')">Стас</button>
+<button onclick="selectUser('Денис')">Денис</button>
+</div>
+
+<!-- PIN -->
+<div id="pin" class="hidden">
+<h2>Введите PIN</h2>
+<div class="pin-box">
+<div class="pin-cell"></div><div class="pin-cell"></div>
+<div class="pin-cell"></div><div class="pin-cell"></div>
+</div>
+<div class="pin-pad" id="pad"></div>
+</div>
+
+<!-- LOADING -->
+<div id="loading" class="hidden">
+<h2>⏳ Проверка...</h2>
+</div>
+
+<!-- FORM -->
+<div id="form" class="hidden">
+
 <h2>Отчет смены</h2>
 
-<!-- ДАТА -->
 <div class="card">
 <div class="label">Дата</div>
 <input type="date" id="date">
 </div>
 
+<div class="card">
+<div class="label">Смена</div>
+<select id="shift"><option>Утро</option><option>Вечер</option></select>
+</div>
+
+<div class="card">
+<div class="label">Готовность кухни</div>
+<select id="ready" onchange="checkReady()">
+<option>5</option><option>4</option><option>3</option><option>2</option><option>1</option>
+</select>
+</div>
+
+<div id="lowBlock" class="card hidden">
+<div class="label">Причина</div>
+<textarea id="lowReason"></textarea>
+<input type="file" id="lowPhoto">
+</div>
+
+<!-- РАСПРЕДЕЛЕНИЕ -->
+<div class="card">
+<div class="label">Распределение</div>
+
+<select id="hot">
+<option disabled selected>Горячая сторона</option>
+<option>Егор</option><option>Стас</option><option>Денис</option><option>Яков</option><option>Алекс</option>
+</select>
+
+<select id="cold">
+<option disabled selected>Холодная сторона</option>
+<option>Егор</option><option>Стас</option><option>Денис</option><option>Яков</option><option>Алекс</option>
+</select>
+
+<select id="check">
+<option disabled selected>Проверяющий</option>
+<option>Егор</option><option>Стас</option><option>Денис</option><option>Яков</option><option>Алекс</option>
+</select>
+
+</div>
+
 <!-- ВЫБРОС -->
 <div class="card">
 <div class="label">Выброс продукции (л)</div>
-
-<div class="waste-toggle" onclick="toggleWaste()">Добавить выброс</div>
-
-<div id="wasteBlock" class="hidden">
-<div id="wasteTags"></div>
-<div id="wasteInputs"></div>
-</div>
+<div id="wasteList"></div>
 </div>
 
 <!-- ОПИСАНИЕ -->
@@ -103,100 +140,153 @@ margin-top:10px;
 <div class="label">Описание смены</div>
 <textarea id="summary"></textarea>
 
-<div class="tag" onclick="toggleHints()">Подсказки</div>
+<span id="toggleBtn" class="tag hints-toggle" onclick="toggleHints()">Подсказки</span>
 <div id="hints" class="hidden"></div>
 </div>
 
 <!-- ЗАГОТОВКИ -->
 <div class="card">
 <div class="label">Заготовки</div>
+
 <div id="prepContainer"></div>
+
 <div class="add-btn" onclick="addPrep()">+ Добавить сотрудника</div>
 </div>
 
 <!-- ПРОБЛЕМЫ -->
 <div class="card">
 <div class="label">Проблемы</div>
-<textarea></textarea>
-<input type="file">
+<textarea id="problem"></textarea>
+<input type="file" id="problemPhoto">
 </div>
 
 <button onclick="goTraining()">Далее →</button>
 
+</div>
+
 <!-- TRAINING -->
 <div id="training" class="hidden">
-
 <h2>Ученичество</h2>
 
 <div class="card">
 <div class="label">Выбор ученика</div>
-<select>
+<select id="student">
 <option>Нет</option>
-<option>Егор</option>
-<option>Стас</option>
-<option>Денис</option>
-<option>Яков</option>
-<option>Алекс</option>
+<option>Егор</option><option>Стас</option><option>Денис</option><option>Яков</option><option>Алекс</option>
 </select>
 </div>
 
 <div class="card">
 <div class="label">Описание ученичества</div>
-<textarea></textarea>
+<textarea id="study"></textarea>
 </div>
 
-<button class="back-btn" onclick="back()">← Назад</button>
-<button>Отправить</button>
+<button onclick="send()">Отправить</button>
+</div>
 
+<div id="done" class="hidden">
+<h2>Спасибо! Отчет отправлен ✅</h2>
+<button onclick="location.reload()">Новый отчет</button>
 </div>
 
 </div>
 
 <script>
 
-/* ВЫБРОС */
-let state={waste:{}};
-let selectedWaste=[];
+const SCRIPT_URL="https://script.google.com/macros/s/AKfycbzKqNQrcOo5it_hb21N8TjXJm8MP6Q_suN071vT5tbMms2p8f30brF5xW9ymLqTdLc9vQ/exec";
 
-const wasteProducts=[
-"Котлеты","Куриная Грудка","Шницелоним","Шницели","Шаурма","Бийонд"
-];
-
-function toggleWaste(){
-wasteBlock.classList.toggle("hidden");
-}
-
-wasteProducts.forEach(p=>{
-const t=document.createElement("div");
-t.className="tag";
-t.innerText=p;
-
-t.onclick=()=>{
-if(selectedWaste.includes(p)){
-selectedWaste=selectedWaste.filter(x=>x!==p);
-delete state.waste[p];
-}else{
-selectedWaste.push(p);
-state.waste[p]=0;
-}
-renderWasteInputs();
-updateTags();
+let state={
+user:"",
+pin:"",
+waste:{},
+prep:[]
 };
 
-wasteTags.appendChild(t);
+/* NAV */
+function show(id){
+["login","pin","form","training","done","loading"].forEach(x=>{
+document.getElementById(x).classList.add("hidden");
+});
+document.getElementById(id).classList.remove("hidden");
+}
+
+/* LOGIN */
+function selectUser(name){
+state.user=name;
+state.pin="";
+updatePin();
+show("pin");
+}
+
+/* PIN */
+const pad=document.getElementById("pad");
+
+[1,2,3,4,5,6,7,8,9,"←",0].forEach(n=>{
+const b=document.createElement("div");
+b.className="pin-btn";
+b.innerText=n;
+
+b.onclick=()=>{
+if(n==="←"){state.pin=state.pin.slice(0,-1);}
+else if(state.pin.length<4){state.pin+=n;}
+
+updatePin();
+
+if(state.pin.length===4){
+checkPin();
+}
+};
+
+pad.appendChild(b);
 });
 
-function updateTags(){
-[...wasteTags.children].forEach(tag=>{
-tag.classList.toggle("active", selectedWaste.includes(tag.innerText));
+function updatePin(){
+document.querySelectorAll(".pin-cell").forEach((c,i)=>{
+c.innerHTML=i<state.pin.length?"<div class='pin-dot'></div>":"";
 });
 }
 
-function renderWasteInputs(){
-wasteInputs.innerHTML="";
-selectedWaste.forEach(p=>{
+async function checkPin(){
+show("loading");
+
+const res=await fetch(SCRIPT_URL,{
+method:"POST",
+body: JSON.stringify({
+type:"auth",
+user:state.user,
+pin:state.pin
+})
+});
+
+const json=await res.json();
+
+if(json.status==="ok"||json.status==="created"){
+show("form");
+date.valueAsDate=new Date();
+}else{
+alert("Неверный PIN");
+state.pin="";
+updatePin();
+show("pin");
+}
+}
+
+/* READY */
+function checkReady(){
+lowBlock.classList.toggle("hidden",ready.value>=4);
+}
+
+/* ВЫБРОС */
+const wasteProducts=[
+"Котлеты","Куриная Грудка","Шницелоним","Шницели","Шаурма","Бийонд",
+"Бургул","Рис","Тхина","Чимичури","Чипотле","Острый лимон","Гуакамоли",
+"Сальса","Соус Чедар","Пельпель Калуи","Колслоу","Квашенная капуста",
+"Пюре","Десерты"
+];
+
+wasteProducts.forEach(p=>{
 const row=document.createElement("div");
-row.className="waste-item";
+row.className="row";
 
 const name=document.createElement("div");
 name.innerText=p;
@@ -204,25 +294,40 @@ name.innerText=p;
 const input=document.createElement("input");
 input.type="number";
 input.placeholder="л";
-input.className="waste-input";
+input.style.width="70px";
 
-input.oninput=()=>{state.waste[p]=input.value;};
+input.oninput=()=>{
+if(input.value){state.waste[p]=input.value;}
+else{delete state.waste[p];}
+};
 
 row.appendChild(name);
 row.appendChild(input);
-wasteInputs.appendChild(row);
+wasteList.appendChild(row);
 });
-}
 
 /* ПОДСКАЗКИ */
 const hintsArr=[
-"Смена была динамичной","Смена была легкой","Смена была тяжелой",
-"Много заказов","Очереди","Нехватка персонала",
-"Ошибки","Отличная работа","Плохая организация"
+"Большая нагрузка","Нехватка персонала","Задержки заказов","Ошибки сборки","Медленная кухня",
+"Очередь","Нет ингредиентов","Перегруз кухни","Долгое ожидание","Проблемы с поставками",
+"Не хватило заготовок","Сломалось оборудование","Проблемы с кассой","Неправильные заказы",
+"Слабая коммуникация","Сильный поток клиентов","Проблемы с доставкой","Нет упаковки",
+"Ошибки кухни","Долгое приготовление","Не хватило персонала","Перегруз на гриле",
+"Перегруз на сборке","Проблемы с чистотой","Задержка открытия","Нехватка соусов",
+"Не хватает продуктов","Проблемы с холодильником","Неправильная выдача",
+"Проблемы с учеником","Плохая организация","Слабая подготовка","Ошибки в заготовках",
+"Проблемы с температурой","Медленная работа","Нет контроля","Проблемы с качеством",
+"Перепутали заказы","Проблемы с логистикой","Плохая смена","Хорошая смена",
+"Отличная команда","Все прошло гладко","Быстрая работа","Клиенты довольны",
+"Высокий чек","Хорошая коммуникация","Чистая кухня","Все по стандарту"
 ];
 
 function toggleHints(){
+const isOpen=!hints.classList.contains("hidden");
 hints.classList.toggle("hidden");
+toggleBtn.classList.toggle("active");
+
+if(!isOpen){
 hints.innerHTML="";
 hintsArr.forEach(h=>{
 const t=document.createElement("div");
@@ -232,49 +337,134 @@ t.onclick=()=>summary.value+=h+", ";
 hints.appendChild(t);
 });
 }
+}
 
-/* ЗАГОТОВКИ */
+/* ЗАГОТОВКИ (фикс без дублей) */
+const prepItems=[
+"Помидоры","Огурцы","Лук красный","Лук белый",
+"Капуста","Морковь","Картошка","Гуакамоле",
+"Сальса","Чимичури","Квашеная капуста"
+];
+
 const workers=["Егор","Стас","Денис","Яков","Алекс"];
-const prepItems=["Помидоры","Огурцы","Лук"];
-
-let prepState=[];
 
 function addPrep(){
-prepState.push({user:"",items:[]});
+state.prep.push({user:"",items:[]});
 renderPrep();
 }
 
 function renderPrep(){
+
 prepContainer.innerHTML="";
 
-prepState.forEach(block=>{
-const wrap=document.createElement("div");
+state.prep.forEach((block,index)=>{
 
+const wrap=document.createElement("div");
+wrap.style.marginBottom="14px";
+
+/* SELECT */
 const select=document.createElement("select");
+
+const def=document.createElement("option");
+def.innerText="Выбери сотрудника";
+def.disabled=true;
+def.selected=!block.user;
+
+select.appendChild(def);
+
 workers.forEach(w=>{
 const o=document.createElement("option");
 o.innerText=w;
+if(block.user===w) o.selected=true;
 select.appendChild(o);
 });
 
 select.onchange=(e)=>{
 block.user=e.target.value;
+renderPrep();
 };
 
 wrap.appendChild(select);
+
+/* ТЕГИ */
+if(block.user){
+const tags=document.createElement("div");
+
+prepItems.forEach(item=>{
+const t=document.createElement("div");
+t.className="tag";
+t.innerText=item;
+
+if(block.items.includes(item)) t.classList.add("active");
+
+t.onclick=()=>{
+if(block.items.includes(item)){
+block.items=block.items.filter(i=>i!==item);
+}else{
+block.items.push(item);
+}
+renderPrep();
+};
+
+tags.appendChild(t);
+});
+
+wrap.appendChild(tags);
+}
+
 prepContainer.appendChild(wrap);
+
 });
 }
 
+/* INIT */
 addPrep();
 
-/* НАВИГАЦИЯ */
+/* NAV */
 function goTraining(){
-training.classList.remove("hidden");
+if(!date.value)return alert("Выбери дату");
+show("training");
 }
 
-function back(){
-training.classList.add("hidden");
+/* BASE64 */
+function toBase64(file){
+return new Promise(res=>{
+if(!file)return res("");
+const r=new FileReader();
+r.onload=()=>res(r.result.split(",")[1]);
+r.readAsDataURL(file);
+});
+}
+
+/* SEND */
+async function send(){
+show("loading");
+
+const photos={
+problem:await toBase64(problemPhoto.files[0]),
+low:await toBase64(lowPhoto.files[0])
+};
+
+await fetch(SCRIPT_URL,{
+method:"POST",
+body:JSON.stringify({
+type:"report",
+user:state.user,
+date:date.value,
+shift:shift.value,
+ready:ready.value,
+lowReason:lowReason.value,
+summary:summary.value,
+problem:problem.value,
+waste:state.waste,
+prep:state.prep,
+student:student.value,
+study:study.value,
+photos
+})
+});
+
+show("done");
 }
 
 </script>

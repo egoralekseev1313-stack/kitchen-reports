@@ -536,13 +536,6 @@ if(!summary.value.trim()){
 return alert("Добавь описание смены");
 }
 
-/* ЗАГОТОВКИ */
-const hasPrep = state.prep.some(p=>p.user && p.items.length);
-
-if(!hasPrep){
-return alert("Добавь хотя бы одну заготовку");
-}
-
 show("training");
 }
 /* BASE64 */

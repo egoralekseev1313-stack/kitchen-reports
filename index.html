@@ -132,7 +132,10 @@ font-size:14px;
 <!-- ВЫБРОС -->
 <div class="card">
 <div class="label">Выброс продукции (л)</div>
-<div id="wasteList"></div>
+
+<div class="add-btn" onclick="toggleWaste()">Показать / скрыть список</div>
+
+<div id="wasteList" class="hidden"></div>
 </div>
 
 <!-- ОПИСАНИЕ -->
@@ -192,6 +195,7 @@ font-size:14px;
 </div>
 
 <script>
+  
 
 const SCRIPT_URL="https://script.google.com/macros/s/AKfycbzKqNQrcOo5it_hb21N8TjXJm8MP6Q_suN071vT5tbMms2p8f30brF5xW9ymLqTdLc9vQ/exec";
 
@@ -274,6 +278,10 @@ show("pin");
 /* READY */
 function checkReady(){
 lowBlock.classList.toggle("hidden",ready.value>=4);
+}
+  
+  function toggleWaste(){
+wasteList.classList.toggle("hidden");
 }
 
 /* ВЫБРОС */

@@ -67,6 +67,14 @@ cursor:pointer;
 color:#ff4d4d;
 margin-left:4px;
 }
+.lang-switch{
+position:absolute;
+top:16px;
+left:16px;
+color:#8b7cff;
+font-size:14px;
+cursor:pointer;
+}
 </style>
 </head>
 
@@ -74,6 +82,7 @@ margin-left:4px;
 <div class="app">
 
 <!-- LOGIN -->
+<div class="lang-switch" onclick="toggleLang()">HE</div>
 <div id="login">
 <h2>Кто менеджер</h2>
 <button onclick="selectUser('Егор')">Егор</button>
@@ -221,15 +230,50 @@ let state={
 user:"",
 pin:"",
 waste:{},
-prep:[]
+prep:[],
+lang:"ru"
 };
-
 /* NAV */
 function show(id){
 ["login","pin","form","training","done","loading"].forEach(x=>{
 document.getElementById(x).classList.add("hidden");
 });
 document.getElementById(id).classList.remove("hidden");
+}
+function toggleLang(){
+state.lang = state.lang === "ru" ? "he" : "ru";
+applyLang();
+}
+function applyLang(){
+
+const lang = t[state.lang];
+
+/* LOGIN */
+document.querySelector("#login h2").innerText = lang.loginTitle;
+
+/* ОСНОВНЫЕ ЛЕЙБЛЫ */
+document.querySelectorAll(".label")[0].innerText = lang.date;
+document.querySelectorAll(".label")[1].innerText = lang.shift;
+document.querySelectorAll(".label")[2].innerText = lang.ready;
+document.querySelectorAll(".label")[3].innerText = lang.distribution;
+document.querySelectorAll(".label")[4].innerText = lang.waste;
+document.querySelectorAll(".label")[5].innerText = lang.summary;
+document.querySelectorAll(".label")[6].innerText = lang.prep;
+document.querySelectorAll(".label")[7].innerText = lang.problems;
+
+/* КНОПКИ */
+document.querySelector("button[onclick='goTraining()']").innerText = lang.next;
+document.querySelector("button[onclick='send()']").innerText = lang.send;
+
+/* TRAINING */
+document.querySelector("#training h2").innerText = lang.training;
+
+/* НАДПИСЬ КНОПКИ */
+document.querySelector(".lang-switch").innerText = state.lang === "ru" ? "HE" : "RU";
+
+/* RTL для иврита */
+document.body.dir = state.lang === "he" ? "rtl" : "ltr";
+
 }
 
 /* LOGIN */
@@ -582,6 +626,37 @@ function goBack(){
 show("form");
 }
 
+ const t = {
+ru:{
+loginTitle:"Кто менеджер",
+date:"Дата",
+shift:"Смена",
+ready:"Готовность кухни",
+distribution:"Распределение",
+waste:"Выброс продукции (л)",
+summary:"Описание смены",
+prep:"Заготовки",
+problems:"Проблемы",
+next:"Далее →",
+training:"Ученичество",
+send:"Отправить"
+},
+he:{
+loginTitle:"מי המנהל",
+date:"תאריך",
+shift:"משמרת",
+ready:"מוכנות המטבח",
+distribution:"חלוקה",
+waste:"פסולת (ליטר)",
+summary:"סיכום המשמרת",
+prep:"הכנות",
+problems:"בעיות",
+next:"הבא →",
+training:"חניכה",
+send:"שלח"
+}
+};
+applyLang();
 </script>
 </body>
 </html>

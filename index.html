@@ -15,6 +15,7 @@ h2{text-align:center;margin:20px 0;}
 input,select,textarea{
 width:100%;padding:12px;border-radius:12px;border:none;
 background:#1f1f28;color:white;font-size:15px;box-sizing:border-box;
+margin-bottom:10px;
 }
 
 textarea{resize:none;height:90px;}
@@ -31,6 +32,7 @@ border-radius:10px;margin:4px;font-size:13px;
 }
 
 .tag.active{background:#6d5dfc;}
+
 .hidden{display:none;}
 
 .pin-box{display:flex;justify-content:center;gap:10px;margin:20px 0;}
@@ -40,8 +42,9 @@ border-radius:10px;margin:4px;font-size:13px;
 .pin-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;justify-items:center;}
 .pin-btn{width:70px;height:70px;border-radius:50%;background:#1c1c24;display:flex;align-items:center;justify-content:center;font-size:20px;}
 
-.row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
-.small-btn{display:inline-block;margin-top:8px;}
+.row{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+
+.hints-toggle.active{background:#6d5dfc;}
 </style>
 </head>
 
@@ -66,10 +69,7 @@ border-radius:10px;margin:4px;font-size:13px;
 <div class="pin-pad" id="pad"></div>
 </div>
 
-<!-- LOADING -->
-<div id="loading" class="hidden">
-<h2>⏳ Проверка...</h2>
-</div>
+<div id="loading" class="hidden"><h2>⏳ Проверка...</h2></div>
 
 <!-- FORM -->
 <div id="form" class="hidden">
@@ -131,9 +131,7 @@ border-radius:10px;margin:4px;font-size:13px;
 <div class="label">Описание смены</div>
 <textarea id="summary"></textarea>
 
-<div class="small-btn">
-<span class="tag" onclick="toggleHints()">Подсказки</span>
-</div>
+<span id="toggleBtn" class="tag hints-toggle" onclick="toggleHints()">Подсказки</span>
 
 <div id="hints" class="hidden"></div>
 </div>
@@ -154,17 +152,15 @@ border-radius:10px;margin:4px;font-size:13px;
 <h2>Ученичество</h2>
 
 <div class="card">
+<div class="label">Выбор ученика</div>
 <select id="student">
 <option>Нет</option>
-<option>Егор</option>
-<option>Стас</option>
-<option>Денис</option>
-<option>Яков</option>
-<option>Алекс</option>
+<option>Егор</option><option>Стас</option><option>Денис</option><option>Яков</option><option>Алекс</option>
 </select>
 </div>
 
 <div class="card">
+<div class="label">Описание ученичества</div>
 <textarea id="study"></textarea>
 </div>
 
@@ -208,10 +204,7 @@ b.onclick=()=>{
 if(n==="←"){state.pin=state.pin.slice(0,-1);}
 else if(state.pin.length<4){state.pin+=n;}
 updatePin();
-
-if(state.pin.length===4){
-checkPin(); // без задержки
-}
+if(state.pin.length===4){checkPin();}
 };
 
 pad.appendChild(b);
@@ -223,18 +216,12 @@ c.innerHTML=i<state.pin.length?"<div class='pin-dot'></div>":"";
 });
 }
 
-/* AUTH */
 async function checkPin(){
 show("loading");
 
-try{
 const res=await fetch(SCRIPT_URL,{
 method:"POST",
-body: JSON.stringify({
-type:"auth",
-user:state.user,
-pin:state.pin
-})
+body: JSON.stringify({type:"auth",user:state.user,pin:state.pin})
 });
 
 const json=await res.json();
@@ -248,10 +235,6 @@ state.pin="";
 updatePin();
 show("pin");
 }
-}catch(e){
-alert("Ошибка сети");
-show("pin");
-}
 }
 
 /* READY */
@@ -259,9 +242,12 @@ function checkReady(){
 lowBlock.classList.toggle("hidden",ready.value>=4);
 }
 
-/* ВЫБРОС */
+/* ВЫБРОС СПИСОК */
 const wasteProducts=[
-"Курица","Котлеты","Сальса","Гуакамоле","Чеддер","Кимчи"
+"Котлеты","Куриная Грудка","Шницелоним","Шницели","Шаурма","Бийонд",
+"Бургул","Рис","Тхина","Чимичури","Чипотле","Острый лимон","Гуакамоли",
+"Сальса","Соус Чедар","Пельпель Калуи","Колслоу","Квашенная капуста",
+"Пюре","Десерты"
 ];
 
 wasteProducts.forEach(p=>{
@@ -277,11 +263,8 @@ input.placeholder="л";
 input.style.width="70px";
 
 input.oninput=()=>{
-if(input.value){
-state.waste[p]=input.value;
-}else{
-delete state.waste[p];
-}
+if(input.value){state.waste[p]=input.value;}
+else{delete state.waste[p];}
 };
 
 row.appendChild(name);
@@ -289,17 +272,29 @@ row.appendChild(input);
 wasteList.appendChild(row);
 });
 
-/* ПОДСКАЗКИ */
+/* ПОДСКАЗКИ 50+ */
 const hintsArr=[
-"Большая нагрузка","Нехватка персонала","Задержки заказов",
-"Ошибки сборки","Медленная кухня","Очередь","Нет ингредиентов",
-"Перегруз кухни","Долгое ожидание","Проблемы с поставками"
+"Большая нагрузка","Нехватка персонала","Задержки заказов","Ошибки сборки","Медленная кухня",
+"Очередь","Нет ингредиентов","Перегруз кухни","Долгое ожидание","Проблемы с поставками",
+"Не хватило заготовок","Сломалось оборудование","Проблемы с кассой","Неправильные заказы",
+"Слабая коммуникация","Сильный поток клиентов","Проблемы с доставкой","Нет упаковки",
+"Ошибки кухни","Долгое приготовление","Не хватило персонала","Перегруз на гриле",
+"Перегруз на сборке","Проблемы с чистотой","Задержка открытия","Нехватка соусов",
+"Не хватает продуктов","Проблемы с холодильником","Неправильная выдача",
+"Проблемы с учеником","Плохая организация","Слабая подготовка","Ошибки в заготовках",
+"Проблемы с температурой","Медленная работа","Нет контроля","Проблемы с качеством",
+"Перепутали заказы","Проблемы с логистикой","Плохая смена","Хорошая смена",
+"Отличная команда","Все прошло гладко","Быстрая работа","Клиенты довольны",
+"Высокий чек","Хорошая коммуникация","Чистая кухня","Все по стандарту"
 ];
 
 function toggleHints(){
+const isOpen = !hints.classList.contains("hidden");
 hints.classList.toggle("hidden");
-hints.innerHTML="";
+toggleBtn.classList.toggle("active");
 
+if(!isOpen){
+hints.innerHTML="";
 hintsArr.forEach(h=>{
 const t=document.createElement("div");
 t.className="tag";
@@ -307,6 +302,7 @@ t.innerText=h;
 t.onclick=()=>summary.value+=h+", ";
 hints.appendChild(t);
 });
+}
 }
 
 /* BASE64 */
@@ -327,7 +323,6 @@ show("training");
 
 /* SEND */
 async function send(){
-
 show("loading");
 
 const photos={

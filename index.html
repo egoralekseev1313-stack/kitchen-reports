@@ -9,15 +9,15 @@ body{margin:0;background:#0a0a0f;font-family:-apple-system;color:white;display:f
 .app{width:100%;max-width:420px;padding:16px;}
 h2{text-align:center;margin:20px 0;}
 
-.card{background:#15151d;padding:16px;border-radius:18px;margin-bottom:14px;}
-.label{font-size:13px;color:#aaa;margin-bottom:8px;}
+.card{background:#15151d;padding:14px;border-radius:16px;margin-bottom:12px;}
+.label{font-size:13px;color:#aaa;margin-bottom:6px;}
 
 input,select,textarea{
 width:100%;padding:12px;border-radius:12px;border:none;
 background:#1f1f28;color:white;font-size:15px;margin-bottom:10px;
 }
 
-textarea{resize:none;height:100px;}
+textarea{resize:none;height:90px;}
 
 button{
 width:100%;padding:14px;border:none;border-radius:14px;
@@ -26,7 +26,7 @@ color:white;font-size:16px;margin-top:10px;
 }
 
 .tag{
-display:inline-block;padding:7px 11px;background:#1f1f28;
+display:inline-block;padding:6px 10px;background:#1f1f28;
 border-radius:10px;margin:4px;font-size:13px;cursor:pointer;
 }
 .tag.active{background:#6d5dfc;}
@@ -80,8 +80,6 @@ margin-top:10px;
 
 <h2>Отчет смены</h2>
 
-<div id="form">
-
 <!-- ДАТА -->
 <div class="card">
 <div class="label">Дата</div>
@@ -98,7 +96,6 @@ margin-top:10px;
 <div id="wasteTags"></div>
 <div id="wasteInputs"></div>
 </div>
-
 </div>
 
 <!-- ОПИСАНИЕ -->
@@ -126,9 +123,7 @@ margin-top:10px;
 
 <button onclick="goTraining()">Далее →</button>
 
-</div>
-
-<!-- СТРАНИЦА 2 -->
+<!-- TRAINING -->
 <div id="training" class="hidden">
 
 <h2>Ученичество</h2>
@@ -159,15 +154,12 @@ margin-top:10px;
 
 <script>
 
-/* -------- ВЫБРОС -------- */
+/* ВЫБРОС */
 let state={waste:{}};
 let selectedWaste=[];
 
 const wasteProducts=[
-"Котлеты","Куриная Грудка","Шницелоним","Шницели","Шаурма","Бийонд",
-"Бургул","Рис","Тхина","Чимичури","Чипотле","Острый лимон","Гуакамоли",
-"Сальса","Соус Чедар","Пельпель Калуи","Колслоу","Квашенная капуста",
-"Пюре","Десерты"
+"Котлеты","Куриная Грудка","Шницелоним","Шницели","Шаурма","Бийонд"
 ];
 
 function toggleWaste(){
@@ -222,25 +214,11 @@ wasteInputs.appendChild(row);
 });
 }
 
-/* -------- ПОДСКАЗКИ (60+) -------- */
+/* ПОДСКАЗКИ */
 const hintsArr=[
-"Смена была динамичной","Смена была супер легкой","Смена выдалась крайне тяжело",
-"Много заказов","Очень большой поток гостей","Очереди на кассе",
-"Задержки заказов","Работали быстро","Отличная командная работа",
-"Нехватка персонала","Не хватало поваров","Перегруз кухни",
-"Ошибки в заказах","Ошибки сборки","Путаница в заказах",
-"Официанты не успевали","Задержки на выдаче","Плохая коммуникация",
-"Отличная коммуникация","Все работали слаженно","Хорошая смена",
-"Отличная смена","Плохая смена","Слабая организация",
-"Сильная команда","Все прошло гладко","Клиенты довольны",
-"Много возвратов","Проблемы с качеством","Проблемы с поставками",
-"Не хватило ингредиентов","Закончились заготовки",
-"Быстро сделали заготовки","Хорошая подготовка кухни",
-"Плохая подготовка","Опоздали с открытием","Все открыли вовремя",
-"Проблемы с оборудованием","Все оборудование работало",
-"Слабая скорость","Отличная скорость","Долгое ожидание",
-"Хорошая выручка","Высокий чек","Низкий чек",
-"Много доставок","Проблемы с доставкой","Все доставляли вовремя"
+"Смена была динамичной","Смена была легкой","Смена была тяжелой",
+"Много заказов","Очереди","Нехватка персонала",
+"Ошибки","Отличная работа","Плохая организация"
 ];
 
 function toggleHints(){
@@ -255,9 +233,9 @@ hints.appendChild(t);
 });
 }
 
-/* -------- ЗАГОТОВКИ -------- */
+/* ЗАГОТОВКИ */
 const workers=["Егор","Стас","Денис","Яков","Алекс"];
-const prepItems=["Помидоры","Огурцы","Лук красный","Лук белый","Капуста","Морковь","Картошка","Гуакамоле","Сальса","Чимичури"];
+const prepItems=["Помидоры","Огурцы","Лук"];
 
 let prepState=[];
 
@@ -270,72 +248,33 @@ function renderPrep(){
 prepContainer.innerHTML="";
 
 prepState.forEach(block=>{
-
 const wrap=document.createElement("div");
 
 const select=document.createElement("select");
-
-const def=document.createElement("option");
-def.innerText="Выбери сотрудника";
-def.disabled=true;
-def.selected=!block.user;
-select.appendChild(def);
-
 workers.forEach(w=>{
 const o=document.createElement("option");
 o.innerText=w;
-if(block.user===w) o.selected=true;
 select.appendChild(o);
 });
 
 select.onchange=(e)=>{
 block.user=e.target.value;
-renderPrep();
 };
 
 wrap.appendChild(select);
-
-if(block.user){
-const tags=document.createElement("div");
-
-prepItems.forEach(item=>{
-const t=document.createElement("div");
-t.className="tag";
-t.innerText=item;
-
-if(block.items.includes(item)) t.classList.add("active");
-
-t.onclick=()=>{
-if(block.items.includes(item)){
-block.items=block.items.filter(i=>i!==item);
-}else{
-block.items.push(item);
-}
-renderPrep();
-};
-
-tags.appendChild(t);
-});
-
-wrap.appendChild(tags);
-}
-
 prepContainer.appendChild(wrap);
-
 });
 }
 
 addPrep();
 
-/* -------- НАВИГАЦИЯ -------- */
+/* НАВИГАЦИЯ */
 function goTraining(){
-form.classList.add("hidden");
 training.classList.remove("hidden");
 }
 
 function back(){
 training.classList.add("hidden");
-form.classList.remove("hidden");
 }
 
 </script>

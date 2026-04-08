@@ -301,12 +301,24 @@ const wasteGroups={
 ]
 };
 
-wasteProducts.forEach(p=>{
+Object.entries(wasteGroups).forEach(([group, products])=>{
+
+/* ЗАГОЛОВОК */
+const title=document.createElement("div");
+title.style.margin="12px 0 6px";
+title.style.fontSize="14px";
+title.style.color="#aaa";
+title.innerText=group;
+
+wasteList.appendChild(title);
+
+/* ПРОДУКТЫ */
+products.forEach(p=>{
 
 const wrap=document.createElement("div");
 wrap.style.marginBottom="10px";
 
-/* ТЕГ (КНОПКА ПРОДУКТА) */
+/* ТЕГ */
 const tag=document.createElement("div");
 tag.className="tag";
 tag.innerText=p;
@@ -318,7 +330,7 @@ input.placeholder="л";
 input.style.width="80px";
 input.classList.add("hidden");
 
-/* КЛИК ПО ПРОДУКТУ */
+/* КЛИК */
 tag.onclick=()=>{
 
 const isActive = tag.classList.toggle("active");
@@ -344,6 +356,8 @@ wrap.appendChild(tag);
 wrap.appendChild(input);
 
 wasteList.appendChild(wrap);
+
+});
 
 });
 

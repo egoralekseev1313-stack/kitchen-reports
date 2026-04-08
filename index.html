@@ -63,6 +63,10 @@ font-size:15px;
 margin-bottom:10px;
 cursor:pointer;
 }
+.req{
+color:#ff4d4d;
+margin-left:4px;
+}
 </style>
 </head>
 
@@ -98,7 +102,7 @@ cursor:pointer;
 <h2>Отчет смены</h2>
 
 <div class="card">
-<div class="label">Дата</div>
+<div class="label">Дата <span class="req">*</span></div>
 <input type="date" id="date">
 </div>
 
@@ -515,10 +519,32 @@ addPrep();
 
 /* NAV */
 function goTraining(){
-if(!date.value)return alert("Выбери дату");
-show("training");
+
+if(!date.value) return alert("Выбери дату");
+
+if(!shift.value) return alert("Выбери смену");
+
+if(!ready.value) return alert("Оцени готовность кухни");
+
+/* ПРОВЕРКА РАСПРЕДЕЛЕНИЯ */
+if(!hot.value || !cold.value || !check.value){
+return alert("Заполни распределение");
 }
 
+/* ОПИСАНИЕ */
+if(!summary.value.trim()){
+return alert("Добавь описание смены");
+}
+
+/* ЗАГОТОВКИ */
+const hasPrep = state.prep.some(p=>p.user && p.items.length);
+
+if(!hasPrep){
+return alert("Добавь хотя бы одну заготовку");
+}
+
+show("training");
+}
 /* BASE64 */
 function toBase64(file){
 return new Promise(res=>{

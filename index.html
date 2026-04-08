@@ -9,15 +9,15 @@ body{margin:0;background:#0a0a0f;font-family:-apple-system;color:white;display:f
 .app{width:100%;max-width:420px;padding:16px;}
 h2{text-align:center;margin:20px 0;}
 
-.card{background:#15151d;padding:14px;border-radius:16px;margin-bottom:12px;}
-.label{font-size:13px;color:#aaa;margin-bottom:6px;}
+.card{background:#15151d;padding:16px;border-radius:18px;margin-bottom:14px;}
+.label{font-size:13px;color:#aaa;margin-bottom:8px;}
 
 input,select,textarea{
 width:100%;padding:12px;border-radius:12px;border:none;
 background:#1f1f28;color:white;font-size:15px;margin-bottom:10px;
 }
 
-textarea{resize:none;height:90px;}
+textarea{resize:none;height:100px;}
 
 button{
 width:100%;padding:14px;border:none;border-radius:14px;
@@ -26,15 +26,12 @@ color:white;font-size:16px;margin-top:10px;
 }
 
 .tag{
-display:inline-block;padding:6px 10px;background:#1f1f28;
+display:inline-block;padding:7px 11px;background:#1f1f28;
 border-radius:10px;margin:4px;font-size:13px;cursor:pointer;
 }
 .tag.active{background:#6d5dfc;}
 
 .hidden{display:none;}
-
-.row{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
-.hints-toggle.active{background:#6d5dfc;}
 
 .add-btn{
 margin-top:10px;
@@ -42,11 +39,10 @@ background:#1f1f28;
 text-align:center;
 padding:10px;
 border-radius:10px;
-font-size:14px;
 cursor:pointer;
 }
 
-/* 🔥 ВЫБРОС */
+/* ВЫБРОС */
 .waste-toggle{
 background:#1f1f28;
 padding:10px;
@@ -71,74 +67,25 @@ background:#0f0f15;
 text-align:center;
 }
 
-/* PIN */
-.pin-box{display:flex;justify-content:center;gap:10px;margin:20px 0;}
-.pin-cell{width:50px;height:50px;border-radius:12px;border:2px solid #333;display:flex;align-items:center;justify-content:center;}
-.pin-dot{width:8px;height:8px;background:white;border-radius:50%;}
-.pin-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;justify-items:center;}
-.pin-btn{width:70px;height:70px;border-radius:50%;background:#1c1c24;display:flex;align-items:center;justify-content:center;font-size:20px;}
+/* BACK */
+.back-btn{
+background:#1f1f28;
+margin-top:10px;
+}
 </style>
 </head>
 
 <body>
 <div class="app">
 
-<!-- LOGIN -->
-<div id="login">
-<h2>Кто менеджер</h2>
-<button onclick="selectUser('Егор')">Егор</button>
-<button onclick="selectUser('Стас')">Стас</button>
-<button onclick="selectUser('Денис')">Денис</button>
-</div>
-
-<!-- PIN -->
-<div id="pin" class="hidden">
-<h2>Введите PIN</h2>
-<div class="pin-box">
-<div class="pin-cell"></div><div class="pin-cell"></div>
-<div class="pin-cell"></div><div class="pin-cell"></div>
-</div>
-<div class="pin-pad" id="pad"></div>
-</div>
-
-<!-- LOADING -->
-<div id="loading" class="hidden">
-<h2>⏳ Проверка...</h2>
-</div>
-
-<!-- FORM -->
-<div id="form" class="hidden">
-
 <h2>Отчет смены</h2>
 
+<div id="form">
+
+<!-- ДАТА -->
 <div class="card">
 <div class="label">Дата</div>
 <input type="date" id="date">
-</div>
-
-<div class="card">
-<div class="label">Смена</div>
-<select id="shift"><option>Утро</option><option>Вечер</option></select>
-</div>
-
-<div class="card">
-<div class="label">Готовность кухни</div>
-<select id="ready" onchange="checkReady()">
-<option>5</option><option>4</option><option>3</option><option>2</option><option>1</option>
-</select>
-</div>
-
-<div id="lowBlock" class="card hidden">
-<div class="label">Причина</div>
-<textarea id="lowReason"></textarea>
-<input type="file" id="lowPhoto">
-</div>
-
-<div class="card">
-<div class="label">Распределение</div>
-<select id="hot"><option disabled selected>Горячая сторона</option><option>Егор</option><option>Стас</option><option>Денис</option><option>Яков</option><option>Алекс</option></select>
-<select id="cold"><option disabled selected>Холодная сторона</option><option>Егор</option><option>Стас</option><option>Денис</option><option>Яков</option><option>Алекс</option></select>
-<select id="check"><option disabled selected>Проверяющий</option><option>Егор</option><option>Стас</option><option>Денис</option><option>Яков</option><option>Алекс</option></select>
 </div>
 
 <!-- ВЫБРОС -->
@@ -151,13 +98,15 @@ text-align:center;
 <div id="wasteTags"></div>
 <div id="wasteInputs"></div>
 </div>
+
 </div>
 
 <!-- ОПИСАНИЕ -->
 <div class="card">
 <div class="label">Описание смены</div>
 <textarea id="summary"></textarea>
-<span id="toggleBtn" class="tag hints-toggle" onclick="toggleHints()">Подсказки</span>
+
+<div class="tag" onclick="toggleHints()">Подсказки</div>
 <div id="hints" class="hidden"></div>
 </div>
 
@@ -168,57 +117,52 @@ text-align:center;
 <div class="add-btn" onclick="addPrep()">+ Добавить сотрудника</div>
 </div>
 
+<!-- ПРОБЛЕМЫ -->
 <div class="card">
 <div class="label">Проблемы</div>
-<textarea id="problem"></textarea>
-<input type="file" id="problemPhoto">
+<textarea></textarea>
+<input type="file">
 </div>
 
 <button onclick="goTraining()">Далее →</button>
 
 </div>
 
-<!-- TRAINING -->
+<!-- СТРАНИЦА 2 -->
 <div id="training" class="hidden">
+
 <h2>Ученичество</h2>
 
 <div class="card">
 <div class="label">Выбор ученика</div>
-<select id="student">
+<select>
 <option>Нет</option>
-<option>Егор</option><option>Стас</option><option>Денис</option><option>Яков</option><option>Алекс</option>
+<option>Егор</option>
+<option>Стас</option>
+<option>Денис</option>
+<option>Яков</option>
+<option>Алекс</option>
 </select>
 </div>
 
 <div class="card">
 <div class="label">Описание ученичества</div>
-<textarea id="study"></textarea>
+<textarea></textarea>
 </div>
 
-<button onclick="send()">Отправить</button>
-</div>
+<button class="back-btn" onclick="back()">← Назад</button>
+<button>Отправить</button>
 
-<div id="done" class="hidden">
-<h2>Спасибо! Отчет отправлен ✅</h2>
-<button onclick="location.reload()">Новый отчет</button>
 </div>
 
 </div>
 
 <script>
 
-const SCRIPT_URL="https://script.google.com/macros/s/AKfycbzKqNQrcOo5it_hb21N8TjXJm8MP6Q_suN071vT5tbMms2p8f30brF5xW9ymLqTdLc9vQ/exec";
-
-let state={
-user:"",
-pin:"",
-waste:{},
-prep:[]
-};
-
+/* -------- ВЫБРОС -------- */
+let state={waste:{}};
 let selectedWaste=[];
 
-/* ---------- ВЫБРОС ---------- */
 const wasteProducts=[
 "Котлеты","Куриная Грудка","Шницелоним","Шницели","Шаурма","Бийонд",
 "Бургул","Рис","Тхина","Чимичури","Чипотле","Острый лимон","Гуакамоли",
@@ -278,10 +222,25 @@ wasteInputs.appendChild(row);
 });
 }
 
-/* ---------- ПОДСКАЗКИ ---------- */
+/* -------- ПОДСКАЗКИ (60+) -------- */
 const hintsArr=[
-"Большая нагрузка","Нехватка персонала","Задержки заказов",
-"Ошибки сборки","Медленная кухня","Очередь"
+"Смена была динамичной","Смена была супер легкой","Смена выдалась крайне тяжело",
+"Много заказов","Очень большой поток гостей","Очереди на кассе",
+"Задержки заказов","Работали быстро","Отличная командная работа",
+"Нехватка персонала","Не хватало поваров","Перегруз кухни",
+"Ошибки в заказах","Ошибки сборки","Путаница в заказах",
+"Официанты не успевали","Задержки на выдаче","Плохая коммуникация",
+"Отличная коммуникация","Все работали слаженно","Хорошая смена",
+"Отличная смена","Плохая смена","Слабая организация",
+"Сильная команда","Все прошло гладко","Клиенты довольны",
+"Много возвратов","Проблемы с качеством","Проблемы с поставками",
+"Не хватило ингредиентов","Закончились заготовки",
+"Быстро сделали заготовки","Хорошая подготовка кухни",
+"Плохая подготовка","Опоздали с открытием","Все открыли вовремя",
+"Проблемы с оборудованием","Все оборудование работало",
+"Слабая скорость","Отличная скорость","Долгое ожидание",
+"Хорошая выручка","Высокий чек","Низкий чек",
+"Много доставок","Проблемы с доставкой","Все доставляли вовремя"
 ];
 
 function toggleHints(){
@@ -296,29 +255,30 @@ hints.appendChild(t);
 });
 }
 
-/* ---------- ЗАГОТОВКИ ---------- */
+/* -------- ЗАГОТОВКИ -------- */
 const workers=["Егор","Стас","Денис","Яков","Алекс"];
 const prepItems=["Помидоры","Огурцы","Лук красный","Лук белый","Капуста","Морковь","Картошка","Гуакамоле","Сальса","Чимичури"];
 
+let prepState=[];
+
 function addPrep(){
-state.prep.push({user:"",items:[]});
+prepState.push({user:"",items:[]});
 renderPrep();
 }
 
 function renderPrep(){
 prepContainer.innerHTML="";
-state.prep.forEach(block=>{
+
+prepState.forEach(block=>{
 
 const wrap=document.createElement("div");
 
-/* SELECT */
 const select=document.createElement("select");
 
 const def=document.createElement("option");
 def.innerText="Выбери сотрудника";
 def.disabled=true;
 def.selected=!block.user;
-
 select.appendChild(def);
 
 workers.forEach(w=>{
@@ -335,7 +295,6 @@ renderPrep();
 
 wrap.appendChild(select);
 
-/* ТЕГИ */
 if(block.user){
 const tags=document.createElement("div");
 
@@ -366,60 +325,17 @@ prepContainer.appendChild(wrap);
 });
 }
 
-/* INIT */
 addPrep();
 
-/* ---------- NAV ---------- */
-function show(id){
-["login","pin","form","training","done","loading"].forEach(x=>{
-document.getElementById(x).classList.add("hidden");
-});
-document.getElementById(id).classList.remove("hidden");
-}
-
-function selectUser(name){
-state.user=name;
-state.pin="";
-updatePin();
-show("pin");
-}
-
-const pad=document.getElementById("pad");
-[1,2,3,4,5,6,7,8,9,"←",0].forEach(n=>{
-const b=document.createElement("div");
-b.className="pin-btn";
-b.innerText=n;
-b.onclick=()=>{
-if(n==="←"){state.pin=state.pin.slice(0,-1);}
-else if(state.pin.length<4){state.pin+=n;}
-updatePin();
-if(state.pin.length===4){checkPin();}
-};
-pad.appendChild(b);
-});
-
-function updatePin(){
-document.querySelectorAll(".pin-cell").forEach((c,i)=>{
-c.innerHTML=i<state.pin.length?"<div class='pin-dot'></div>":"";
-});
-}
-
-function checkPin(){
-show("form");
-date.valueAsDate=new Date();
-}
-
-function checkReady(){
-lowBlock.classList.toggle("hidden",ready.value>=4);
-}
-
+/* -------- НАВИГАЦИЯ -------- */
 function goTraining(){
-if(!date.value)return alert("Выбери дату");
-show("training");
+form.classList.add("hidden");
+training.classList.remove("hidden");
 }
 
-function send(){
-show("done");
+function back(){
+training.classList.add("hidden");
+form.classList.remove("hidden");
 }
 
 </script>

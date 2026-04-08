@@ -11,169 +11,7 @@ h2{text-align:center;margin:20px 0;}
 
 .card{background:#15151d;padding:14px;border-radius:16px;margin-bottom:12px;}
 .label{font-size:13px;color:#aaa;margin-bottom:6px;}
-/* 🔥 ВЫБРОС (НОВЫЙ UX) */
-const wasteProducts=[
-"Котлеты","Куриная Грудка","Шницелоним","Шницели","Шаурма","Бийонд",
-"Бургул","Рис","Тхина","Чимичури","Чипотле","Острый лимон","Гуакамоли",
-"Сальса","Соус Чедар","Пельпель Калуи","Колслоу","Квашенная капуста",
-"Пюре","Десерты"
-];
 
-wasteProducts.forEach(p=>{
-
-const row=document.createElement("div");
-row.className="waste-row";
-
-const name=document.createElement("div");
-name.innerText=p;
-
-const input=document.createElement("input");
-input.type="number";
-input.placeholder="л";
-input.className="waste-input";
-
-/* ввод */
-input.oninput=()=>{
-if(input.value){
-state.waste[p]=input.value;
-}else{
-delete state.waste[p];
-}
-};
-
-/* клик по строке */
-row.onclick=(e)=>{
-
-// чтобы клик по input не закрывал
-if(e.target.tagName==="INPUT") return;
-
-const active=row.classList.contains("active");
-
-if(active){
-row.classList.remove("active");
-input.classList.remove("show");
-input.value="";
-delete state.waste[p];
-}else{
-row.classList.add("active");
-input.classList.add("show");
-setTimeout(()=>input.focus(),100);
-}
-};
-
-row.appendChild(name);
-row.appendChild(input);
-wasteList.appendChild(row);
-
-});/* 🔥 ВЫБРОС (НОВЫЙ UX) */
-const wasteProducts=[
-"Котлеты","Куриная Грудка","Шницелоним","Шницели","Шаурма","Бийонд",
-"Бургул","Рис","Тхина","Чимичури","Чипотле","Острый лимон","Гуакамоли",
-"Сальса","Соус Чедар","Пельпель Калуи","Колслоу","Квашенная капуста",
-"Пюре","Десерты"
-];
-
-wasteProducts.forEach(p=>{
-
-const row=document.createElement("div");
-row.className="waste-row";
-
-const name=document.createElement("div");
-name.innerText=p;
-
-const input=document.createElement("input");
-input.type="number";
-input.placeholder="л";
-input.className="waste-input";
-
-/* ввод */
-input.oninput=()=>{
-if(input.value){
-state.waste[p]=input.value;
-}else{
-delete state.waste[p];
-}
-};
-
-/* клик по строке */
-row.onclick=(e)=>{
-
-// чтобы клик по input не закрывал
-if(e.target.tagName==="INPUT") return;
-
-const active=row.classList.contains("active");
-
-if(active){
-row.classList.remove("active");
-input.classList.remove("show");
-input.value="";
-delete state.waste[p];
-}else{
-row.classList.add("active");
-input.classList.add("show");
-setTimeout(()=>input.focus(),100);
-}
-};
-
-row.appendChild(name);
-row.appendChild(input);
-wasteList.appendChild(row);
-
-});/* 🔥 ВЫБРОС (НОВЫЙ UX) */
-const wasteProducts=[
-"Котлеты","Куриная Грудка","Шницелоним","Шницели","Шаурма","Бийонд",
-"Бургул","Рис","Тхина","Чимичури","Чипотле","Острый лимон","Гуакамоли",
-"Сальса","Соус Чедар","Пельпель Калуи","Колслоу","Квашенная капуста",
-"Пюре","Десерты"
-];
-
-wasteProducts.forEach(p=>{
-
-const row=document.createElement("div");
-row.className="waste-row";
-
-const name=document.createElement("div");
-name.innerText=p;
-
-const input=document.createElement("input");
-input.type="number";
-input.placeholder="л";
-input.className="waste-input";
-
-/* ввод */
-input.oninput=()=>{
-if(input.value){
-state.waste[p]=input.value;
-}else{
-delete state.waste[p];
-}
-};
-
-/* клик по строке */
-row.onclick=(e)=>{
-
-// чтобы клик по input не закрывал
-if(e.target.tagName==="INPUT") return;
-
-const active=row.classList.contains("active");
-
-if(active){
-row.classList.remove("active");
-input.classList.remove("show");
-input.value="";
-delete state.waste[p];
-}else{
-row.classList.add("active");
-input.classList.add("show");
-setTimeout(()=>input.focus(),100);
-}
-};
-
-row.appendChild(name);
-row.appendChild(input);
-wasteList.appendChild(row);
-
-});
 input,select,textarea{
 width:100%;padding:12px;border-radius:12px;border:none;
 background:#1f1f28;color:white;font-size:15px;box-sizing:border-box;margin-bottom:10px;
@@ -191,8 +29,8 @@ color:white;font-size:16px;margin-top:10px;
 display:inline-block;padding:6px 10px;background:#1f1f28;
 border-radius:10px;margin:4px;font-size:13px;
 }
-
 .tag.active{background:#6d5dfc;}
+
 .hidden{display:none;}
 
 .pin-box{display:flex;justify-content:center;gap:10px;margin:20px 0;}
@@ -270,102 +108,31 @@ font-size:14px;
 <input type="file" id="lowPhoto">
 </div>
 
-<!-- РАСПРЕДЕЛЕНИЕ -->
 <div class="card">
 <div class="label">Распределение</div>
-
-<select id="hot">
-<option disabled selected>Горячая сторона</option>
-<option>Егор</option><option>Стас</option><option>Денис</option><option>Яков</option><option>Алекс</option>
-</select>
-
-<select id="cold">
-<option disabled selected>Холодная сторона</option>
-<option>Егор</option><option>Стас</option><option>Денис</option><option>Яков</option><option>Алекс</option>
-</select>
-
-<select id="check">
-<option disabled selected>Проверяющий</option>
-<option>Егор</option><option>Стас</option><option>Денис</option><option>Яков</option><option>Алекс</option>
-</select>
-
+<select id="hot"><option disabled selected>Горячая сторона</option><option>Егор</option><option>Стас</option><option>Денис</option><option>Яков</option><option>Алекс</option></select>
+<select id="cold"><option disabled selected>Холодная сторона</option><option>Егор</option><option>Стас</option><option>Денис</option><option>Яков</option><option>Алекс</option></select>
+<select id="check"><option disabled selected>Проверяющий</option><option>Егор</option><option>Стас</option><option>Денис</option><option>Яков</option><option>Алекс</option></select>
 </div>
 
-/* 🔥 ВЫБРОС (НОВЫЙ UX) */
-const wasteProducts=[
-"Котлеты","Куриная Грудка","Шницелоним","Шницели","Шаурма","Бийонд",
-"Бургул","Рис","Тхина","Чимичури","Чипотле","Острый лимон","Гуакамоли",
-"Сальса","Соус Чедар","Пельпель Калуи","Колслоу","Квашенная капуста",
-"Пюре","Десерты"
-];
+<div class="card">
+<div class="label">Выброс продукции (л)</div>
+<div id="wasteList"></div>
+</div>
 
-wasteProducts.forEach(p=>{
-
-const row=document.createElement("div");
-row.className="waste-row";
-
-const name=document.createElement("div");
-name.innerText=p;
-
-const input=document.createElement("input");
-input.type="number";
-input.placeholder="л";
-input.className="waste-input";
-
-/* ввод */
-input.oninput=()=>{
-if(input.value){
-state.waste[p]=input.value;
-}else{
-delete state.waste[p];
-}
-};
-
-/* клик по строке */
-row.onclick=(e)=>{
-
-// чтобы клик по input не закрывал
-if(e.target.tagName==="INPUT") return;
-
-const active=row.classList.contains("active");
-
-if(active){
-row.classList.remove("active");
-input.classList.remove("show");
-input.value="";
-delete state.waste[p];
-}else{
-row.classList.add("active");
-input.classList.add("show");
-setTimeout(()=>input.focus(),100);
-}
-};
-
-row.appendChild(name);
-row.appendChild(input);
-wasteList.appendChild(row);
-
-});
-
-<!-- ОПИСАНИЕ -->
 <div class="card">
 <div class="label">Описание смены</div>
 <textarea id="summary"></textarea>
-
 <span id="toggleBtn" class="tag hints-toggle" onclick="toggleHints()">Подсказки</span>
 <div id="hints" class="hidden"></div>
 </div>
 
-<!-- ЗАГОТОВКИ -->
 <div class="card">
 <div class="label">Заготовки</div>
-
 <div id="prepContainer"></div>
-
 <div class="add-btn" onclick="addPrep()">+ Добавить сотрудника</div>
 </div>
 
-<!-- ПРОБЛЕМЫ -->
 <div class="card">
 <div class="label">Проблемы</div>
 <textarea id="problem"></textarea>
@@ -488,13 +255,8 @@ function checkReady(){
 lowBlock.classList.toggle("hidden",ready.value>=4);
 }
 
-/* ВЫБРОС */
-const wasteProducts=[
-"Котлеты","Куриная Грудка","Шницелоним","Шницели","Шаурма","Бийонд",
-"Бургул","Рис","Тхина","Чимичури","Чипотле","Острый лимон","Гуакамоли",
-"Сальса","Соус Чедар","Пельпель Калуи","Колслоу","Квашенная капуста",
-"Пюре","Десерты"
-];
+/* ВЫБРОС (старый стабильный) */
+const wasteProducts=["Котлеты","Куриная Грудка","Шницелоним","Шницели","Шаурма","Бийонд","Бургул","Рис","Тхина","Чимичури","Чипотле","Острый лимон","Гуакамоли","Сальса","Соус Чедар","Пельпель Калуи","Колслоу","Квашенная капуста","Пюре","Десерты"];
 
 wasteProducts.forEach(p=>{
 const row=document.createElement("div");
@@ -519,27 +281,10 @@ wasteList.appendChild(row);
 });
 
 /* ПОДСКАЗКИ */
-const hintsArr=[
-"Большая нагрузка","Нехватка персонала","Задержки заказов","Ошибки сборки","Медленная кухня",
-"Очередь","Нет ингредиентов","Перегруз кухни","Долгое ожидание","Проблемы с поставками",
-"Не хватило заготовок","Сломалось оборудование","Проблемы с кассой","Неправильные заказы",
-"Слабая коммуникация","Сильный поток клиентов","Проблемы с доставкой","Нет упаковки",
-"Ошибки кухни","Долгое приготовление","Не хватило персонала","Перегруз на гриле",
-"Перегруз на сборке","Проблемы с чистотой","Задержка открытия","Нехватка соусов",
-"Не хватает продуктов","Проблемы с холодильником","Неправильная выдача",
-"Проблемы с учеником","Плохая организация","Слабая подготовка","Ошибки в заготовках",
-"Проблемы с температурой","Медленная работа","Нет контроля","Проблемы с качеством",
-"Перепутали заказы","Проблемы с логистикой","Плохая смена","Хорошая смена",
-"Отличная команда","Все прошло гладко","Быстрая работа","Клиенты довольны",
-"Высокий чек","Хорошая коммуникация","Чистая кухня","Все по стандарту"
-];
+const hintsArr=["Большая нагрузка","Нехватка персонала","Задержки заказов"];
 
 function toggleHints(){
-const isOpen=!hints.classList.contains("hidden");
 hints.classList.toggle("hidden");
-toggleBtn.classList.toggle("active");
-
-if(!isOpen){
 hints.innerHTML="";
 hintsArr.forEach(h=>{
 const t=document.createElement("div");
@@ -549,15 +294,9 @@ t.onclick=()=>summary.value+=h+", ";
 hints.appendChild(t);
 });
 }
-}
 
-/* ЗАГОТОВКИ (фикс без дублей) */
-const prepItems=[
-"Помидоры","Огурцы","Лук красный","Лук белый",
-"Капуста","Морковь","Картошка","Гуакамоле",
-"Сальса","Чимичури","Квашеная капуста"
-];
-
+/* ЗАГОТОВКИ */
+const prepItems=["Помидоры","Огурцы","Лук"];
 const workers=["Егор","Стас","Денис","Яков","Алекс"];
 
 function addPrep(){
@@ -566,70 +305,22 @@ renderPrep();
 }
 
 function renderPrep(){
-
 prepContainer.innerHTML="";
-
-state.prep.forEach((block,index)=>{
-
+state.prep.forEach(block=>{
 const wrap=document.createElement("div");
-wrap.style.marginBottom="14px";
 
-/* SELECT */
 const select=document.createElement("select");
-
-const def=document.createElement("option");
-def.innerText="Выбери сотрудника";
-def.disabled=true;
-def.selected=!block.user;
-
-select.appendChild(def);
-
 workers.forEach(w=>{
 const o=document.createElement("option");
 o.innerText=w;
-if(block.user===w) o.selected=true;
 select.appendChild(o);
 });
 
-select.onchange=(e)=>{
-block.user=e.target.value;
-renderPrep();
-};
-
 wrap.appendChild(select);
-
-/* ТЕГИ */
-if(block.user){
-const tags=document.createElement("div");
-
-prepItems.forEach(item=>{
-const t=document.createElement("div");
-t.className="tag";
-t.innerText=item;
-
-if(block.items.includes(item)) t.classList.add("active");
-
-t.onclick=()=>{
-if(block.items.includes(item)){
-block.items=block.items.filter(i=>i!==item);
-}else{
-block.items.push(item);
-}
-renderPrep();
-};
-
-tags.appendChild(t);
-});
-
-wrap.appendChild(tags);
-}
-
 prepContainer.appendChild(wrap);
-
 });
 }
 
-/* INIT */
 addPrep();
 
 /* NAV */
@@ -638,45 +329,10 @@ if(!date.value)return alert("Выбери дату");
 show("training");
 }
 
-/* BASE64 */
-function toBase64(file){
-return new Promise(res=>{
-if(!file)return res("");
-const r=new FileReader();
-r.onload=()=>res(r.result.split(",")[1]);
-r.readAsDataURL(file);
-});
-}
-
 /* SEND */
 async function send(){
 show("loading");
-
-const photos={
-problem:await toBase64(problemPhoto.files[0]),
-low:await toBase64(lowPhoto.files[0])
-};
-
-await fetch(SCRIPT_URL,{
-method:"POST",
-body:JSON.stringify({
-type:"report",
-user:state.user,
-date:date.value,
-shift:shift.value,
-ready:ready.value,
-lowReason:lowReason.value,
-summary:summary.value,
-problem:problem.value,
-waste:state.waste,
-prep:state.prep,
-student:student.value,
-study:study.value,
-photos
-})
-});
-
-show("done");
+setTimeout(()=>show("done"),1000);
 }
 
 </script>

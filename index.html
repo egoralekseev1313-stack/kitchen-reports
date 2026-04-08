@@ -11,7 +11,169 @@ h2{text-align:center;margin:20px 0;}
 
 .card{background:#15151d;padding:14px;border-radius:16px;margin-bottom:12px;}
 .label{font-size:13px;color:#aaa;margin-bottom:6px;}
+/* 🔥 ВЫБРОС (НОВЫЙ UX) */
+const wasteProducts=[
+"Котлеты","Куриная Грудка","Шницелоним","Шницели","Шаурма","Бийонд",
+"Бургул","Рис","Тхина","Чимичури","Чипотле","Острый лимон","Гуакамоли",
+"Сальса","Соус Чедар","Пельпель Калуи","Колслоу","Квашенная капуста",
+"Пюре","Десерты"
+];
 
+wasteProducts.forEach(p=>{
+
+const row=document.createElement("div");
+row.className="waste-row";
+
+const name=document.createElement("div");
+name.innerText=p;
+
+const input=document.createElement("input");
+input.type="number";
+input.placeholder="л";
+input.className="waste-input";
+
+/* ввод */
+input.oninput=()=>{
+if(input.value){
+state.waste[p]=input.value;
+}else{
+delete state.waste[p];
+}
+};
+
+/* клик по строке */
+row.onclick=(e)=>{
+
+// чтобы клик по input не закрывал
+if(e.target.tagName==="INPUT") return;
+
+const active=row.classList.contains("active");
+
+if(active){
+row.classList.remove("active");
+input.classList.remove("show");
+input.value="";
+delete state.waste[p];
+}else{
+row.classList.add("active");
+input.classList.add("show");
+setTimeout(()=>input.focus(),100);
+}
+};
+
+row.appendChild(name);
+row.appendChild(input);
+wasteList.appendChild(row);
+
+});/* 🔥 ВЫБРОС (НОВЫЙ UX) */
+const wasteProducts=[
+"Котлеты","Куриная Грудка","Шницелоним","Шницели","Шаурма","Бийонд",
+"Бургул","Рис","Тхина","Чимичури","Чипотле","Острый лимон","Гуакамоли",
+"Сальса","Соус Чедар","Пельпель Калуи","Колслоу","Квашенная капуста",
+"Пюре","Десерты"
+];
+
+wasteProducts.forEach(p=>{
+
+const row=document.createElement("div");
+row.className="waste-row";
+
+const name=document.createElement("div");
+name.innerText=p;
+
+const input=document.createElement("input");
+input.type="number";
+input.placeholder="л";
+input.className="waste-input";
+
+/* ввод */
+input.oninput=()=>{
+if(input.value){
+state.waste[p]=input.value;
+}else{
+delete state.waste[p];
+}
+};
+
+/* клик по строке */
+row.onclick=(e)=>{
+
+// чтобы клик по input не закрывал
+if(e.target.tagName==="INPUT") return;
+
+const active=row.classList.contains("active");
+
+if(active){
+row.classList.remove("active");
+input.classList.remove("show");
+input.value="";
+delete state.waste[p];
+}else{
+row.classList.add("active");
+input.classList.add("show");
+setTimeout(()=>input.focus(),100);
+}
+};
+
+row.appendChild(name);
+row.appendChild(input);
+wasteList.appendChild(row);
+
+});/* 🔥 ВЫБРОС (НОВЫЙ UX) */
+const wasteProducts=[
+"Котлеты","Куриная Грудка","Шницелоним","Шницели","Шаурма","Бийонд",
+"Бургул","Рис","Тхина","Чимичури","Чипотле","Острый лимон","Гуакамоли",
+"Сальса","Соус Чедар","Пельпель Калуи","Колслоу","Квашенная капуста",
+"Пюре","Десерты"
+];
+
+wasteProducts.forEach(p=>{
+
+const row=document.createElement("div");
+row.className="waste-row";
+
+const name=document.createElement("div");
+name.innerText=p;
+
+const input=document.createElement("input");
+input.type="number";
+input.placeholder="л";
+input.className="waste-input";
+
+/* ввод */
+input.oninput=()=>{
+if(input.value){
+state.waste[p]=input.value;
+}else{
+delete state.waste[p];
+}
+};
+
+/* клик по строке */
+row.onclick=(e)=>{
+
+// чтобы клик по input не закрывал
+if(e.target.tagName==="INPUT") return;
+
+const active=row.classList.contains("active");
+
+if(active){
+row.classList.remove("active");
+input.classList.remove("show");
+input.value="";
+delete state.waste[p];
+}else{
+row.classList.add("active");
+input.classList.add("show");
+setTimeout(()=>input.focus(),100);
+}
+};
+
+row.appendChild(name);
+row.appendChild(input);
+wasteList.appendChild(row);
+
+});
 input,select,textarea{
 width:100%;padding:12px;border-radius:12px;border:none;
 background:#1f1f28;color:white;font-size:15px;box-sizing:border-box;margin-bottom:10px;
@@ -129,11 +291,61 @@ font-size:14px;
 
 </div>
 
-<!-- ВЫБРОС -->
-<div class="card">
-<div class="label">Выброс продукции (л)</div>
-<div id="wasteList"></div>
-</div>
+/* 🔥 ВЫБРОС (НОВЫЙ UX) */
+const wasteProducts=[
+"Котлеты","Куриная Грудка","Шницелоним","Шницели","Шаурма","Бийонд",
+"Бургул","Рис","Тхина","Чимичури","Чипотле","Острый лимон","Гуакамоли",
+"Сальса","Соус Чедар","Пельпель Калуи","Колслоу","Квашенная капуста",
+"Пюре","Десерты"
+];
+
+wasteProducts.forEach(p=>{
+
+const row=document.createElement("div");
+row.className="waste-row";
+
+const name=document.createElement("div");
+name.innerText=p;
+
+const input=document.createElement("input");
+input.type="number";
+input.placeholder="л";
+input.className="waste-input";
+
+/* ввод */
+input.oninput=()=>{
+if(input.value){
+state.waste[p]=input.value;
+}else{
+delete state.waste[p];
+}
+};
+
+/* клик по строке */
+row.onclick=(e)=>{
+
+// чтобы клик по input не закрывал
+if(e.target.tagName==="INPUT") return;
+
+const active=row.classList.contains("active");
+
+if(active){
+row.classList.remove("active");
+input.classList.remove("show");
+input.value="";
+delete state.waste[p];
+}else{
+row.classList.add("active");
+input.classList.add("show");
+setTimeout(()=>input.focus(),100);
+}
+};
+
+row.appendChild(name);
+row.appendChild(input);
+wasteList.appendChild(row);
+
+});
 
 <!-- ОПИСАНИЕ -->
 <div class="card">

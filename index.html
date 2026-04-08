@@ -41,7 +41,6 @@ border-radius:10px;margin:4px;font-size:13px;
 .pin-btn{width:70px;height:70px;border-radius:50%;background:#1c1c24;display:flex;align-items:center;justify-content:center;font-size:20px;}
 
 .row{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
-
 .hints-toggle.active{background:#6d5dfc;}
 
 .add-btn{
@@ -58,6 +57,7 @@ font-size:14px;
 <body>
 <div class="app">
 
+<!-- LOGIN -->
 <div id="login">
 <h2>Кто менеджер</h2>
 <button onclick="selectUser('Егор')">Егор</button>
@@ -65,6 +65,7 @@ font-size:14px;
 <button onclick="selectUser('Денис')">Денис</button>
 </div>
 
+<!-- PIN -->
 <div id="pin" class="hidden">
 <h2>Введите PIN</h2>
 <div class="pin-box">
@@ -76,6 +77,7 @@ font-size:14px;
 
 <div id="loading" class="hidden"><h2>⏳ Проверка...</h2></div>
 
+<!-- FORM -->
 <div id="form" class="hidden">
 
 <h2>Отчет смены</h2>
@@ -96,10 +98,90 @@ font-size:14px;
 
 </div>
 
+</div>
+
 <script>
 
-let state={prepBlocks:[]};
+const SCRIPT_URL="https://script.google.com/macros/s/AKfycbzKqNQrcOo5it_hb21N8TjXJm8MP6Q_suN071vT5tbMms2p8f30brF5xW9ymLqTdLc9vQ/exec";
 
+let state={
+user:"",
+pin:"",
+prepBlocks:[]
+};
+
+/* NAV */
+function show(id){
+["login","pin","form","loading"].forEach(x=>{
+document.getElementById(x).classList.add("hidden");
+});
+document.getElementById(id).classList.remove("hidden");
+}
+
+/* LOGIN */
+function selectUser(name){
+state.user=name;
+state.pin="";
+updatePin();
+show("pin");
+}
+
+/* PIN PAD */
+const pad=document.getElementById("pad");
+
+[1,2,3,4,5,6,7,8,9,"←",0].forEach(n=>{
+const b=document.createElement("div");
+b.className="pin-btn";
+b.innerText=n;
+
+b.onclick=()=>{
+if(n==="←"){state.pin=state.pin.slice(0,-1);}
+else if(state.pin.length<4){state.pin+=n;}
+
+updatePin();
+
+if(state.pin.length===4){
+checkPin();
+}
+};
+
+pad.appendChild(b);
+});
+
+/* PIN UI */
+function updatePin(){
+document.querySelectorAll(".pin-cell").forEach((c,i)=>{
+c.innerHTML=i<state.pin.length?"<div class='pin-dot'></div>":"";
+});
+}
+
+/* AUTH */
+async function checkPin(){
+show("loading");
+
+const res=await fetch(SCRIPT_URL,{
+method:"POST",
+body: JSON.stringify({
+type:"auth",
+user:state.user,
+pin:state.pin
+})
+});
+
+const json=await res.json();
+
+if(json.status==="ok"||json.status==="created"){
+show("form");
+date.valueAsDate=new Date();
+}else{
+alert("Неверный PIN");
+state.pin="";
+updatePin();
+show("pin");
+}
+}
+
+/* ЗАГОТОВКИ */
 const prepItems=[
 "Помидоры","Огурцы","Лук красный","Лук белый","Капуста","Морковь",
 "Картошка","Гуакамоле","Сальса","Чимичури","Квашеная капуста"
@@ -107,9 +189,7 @@ const prepItems=[
 
 const workers=["Егор","Стас","Денис","Яков","Алекс"];
 
-/* СОЗДАНИЕ БЛОКА */
 function addPrepBlock(){
-
 const id=Date.now();
 
 state.prepBlocks.push({
@@ -121,9 +201,7 @@ items:[]
 renderPrepBlocks();
 }
 
-/* РЕНДЕР */
 function renderPrepBlocks(){
-
 prepContainer.innerHTML="";
 
 state.prepBlocks.forEach(block=>{
@@ -154,7 +232,7 @@ block.user=e.target.value;
 
 wrap.appendChild(select);
 
-/* ITEMS */
+/* TAGS */
 const itemsDiv=document.createElement("div");
 
 prepItems.forEach(item=>{
@@ -178,9 +256,7 @@ itemsDiv.appendChild(t);
 });
 
 wrap.appendChild(itemsDiv);
-
 prepContainer.appendChild(wrap);
-
 });
 }
 

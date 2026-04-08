@@ -14,7 +14,7 @@ h2{text-align:center;margin:20px 0;}
 
 input,select,textarea{
 width:100%;padding:12px;border-radius:12px;border:none;
-background:#1f1f28;color:white;font-size:15px;box-sizing:border-box;margin-bottom:10px;
+background:#1f1f28;color:white;font-size:15px;margin-bottom:10px;
 }
 
 textarea{resize:none;height:90px;}
@@ -43,6 +43,7 @@ text-align:center;
 padding:10px;
 border-radius:10px;
 font-size:14px;
+cursor:pointer;
 }
 
 /* 🔥 ВЫБРОС */
@@ -140,7 +141,7 @@ text-align:center;
 <select id="check"><option disabled selected>Проверяющий</option><option>Егор</option><option>Стас</option><option>Денис</option><option>Яков</option><option>Алекс</option></select>
 </div>
 
-<!-- 🔥 НОВЫЙ ВЫБРОС -->
+<!-- ВЫБРОС -->
 <div class="card">
 <div class="label">Выброс продукции (л)</div>
 
@@ -150,9 +151,9 @@ text-align:center;
 <div id="wasteTags"></div>
 <div id="wasteInputs"></div>
 </div>
-
 </div>
 
+<!-- ОПИСАНИЕ -->
 <div class="card">
 <div class="label">Описание смены</div>
 <textarea id="summary"></textarea>
@@ -160,6 +161,7 @@ text-align:center;
 <div id="hints" class="hidden"></div>
 </div>
 
+<!-- ЗАГОТОВКИ -->
 <div class="card">
 <div class="label">Заготовки</div>
 <div id="prepContainer"></div>
@@ -216,7 +218,7 @@ prep:[]
 
 let selectedWaste=[];
 
-/* ВЫБРОС */
+/* ---------- ВЫБРОС ---------- */
 const wasteProducts=[
 "Котлеты","Куриная Грудка","Шницелоним","Шницели","Шаурма","Бийонд",
 "Бургул","Рис","Тхина","Чимичури","Чипотле","Острый лимон","Гуакамоли",
@@ -267,7 +269,6 @@ const input=document.createElement("input");
 input.type="number";
 input.placeholder="л";
 input.className="waste-input";
-input.value=state.waste[p]||"";
 
 input.oninput=()=>{state.waste[p]=input.value;};
 
@@ -277,7 +278,98 @@ wasteInputs.appendChild(row);
 });
 }
 
-/* остальной код без изменений */
+/* ---------- ПОДСКАЗКИ ---------- */
+const hintsArr=[
+"Большая нагрузка","Нехватка персонала","Задержки заказов",
+"Ошибки сборки","Медленная кухня","Очередь"
+];
+
+function toggleHints(){
+hints.classList.toggle("hidden");
+hints.innerHTML="";
+hintsArr.forEach(h=>{
+const t=document.createElement("div");
+t.className="tag";
+t.innerText=h;
+t.onclick=()=>summary.value+=h+", ";
+hints.appendChild(t);
+});
+}
+
+/* ---------- ЗАГОТОВКИ ---------- */
+const workers=["Егор","Стас","Денис","Яков","Алекс"];
+const prepItems=["Помидоры","Огурцы","Лук красный","Лук белый","Капуста","Морковь","Картошка","Гуакамоле","Сальса","Чимичури"];
+
+function addPrep(){
+state.prep.push({user:"",items:[]});
+renderPrep();
+}
+
+function renderPrep(){
+prepContainer.innerHTML="";
+state.prep.forEach(block=>{
+
+const wrap=document.createElement("div");
+
+/* SELECT */
+const select=document.createElement("select");
+
+const def=document.createElement("option");
+def.innerText="Выбери сотрудника";
+def.disabled=true;
+def.selected=!block.user;
+
+select.appendChild(def);
+
+workers.forEach(w=>{
+const o=document.createElement("option");
+o.innerText=w;
+if(block.user===w) o.selected=true;
+select.appendChild(o);
+});
+
+select.onchange=(e)=>{
+block.user=e.target.value;
+renderPrep();
+};
+
+wrap.appendChild(select);
+
+/* ТЕГИ */
+if(block.user){
+const tags=document.createElement("div");
+
+prepItems.forEach(item=>{
+const t=document.createElement("div");
+t.className="tag";
+t.innerText=item;
+
+if(block.items.includes(item)) t.classList.add("active");
+
+t.onclick=()=>{
+if(block.items.includes(item)){
+block.items=block.items.filter(i=>i!==item);
+}else{
+block.items.push(item);
+}
+renderPrep();
+};
+
+tags.appendChild(t);
+});
+
+wrap.appendChild(tags);
+}
+
+prepContainer.appendChild(wrap);
+
+});
+}
+
+/* INIT */
+addPrep();
+
+/* ---------- NAV ---------- */
 function show(id){
 ["login","pin","form","training","done","loading"].forEach(x=>{
 document.getElementById(x).classList.add("hidden");
@@ -312,22 +404,13 @@ c.innerHTML=i<state.pin.length?"<div class='pin-dot'></div>":"";
 });
 }
 
-async function checkPin(){
-show("loading");
-setTimeout(()=>{show("form");date.valueAsDate=new Date();},800);
+function checkPin(){
+show("form");
+date.valueAsDate=new Date();
 }
 
 function checkReady(){
 lowBlock.classList.toggle("hidden",ready.value>=4);
-}
-
-function toggleHints(){
-hints.classList.toggle("hidden");
-}
-
-function addPrep(){
-state.prep.push({});
-prepContainer.innerHTML+="<select><option>Егор</option></select>";
 }
 
 function goTraining(){

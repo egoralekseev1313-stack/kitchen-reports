@@ -79,11 +79,6 @@ cursor:pointer;
 
 <body>
 <div class="app">
-<div style="display:flex;justify-content:flex-end;margin-bottom:10px;">
-  <button onclick="toggleLang()" style="width:auto;padding:6px 10px;font-size:12px;">
-    HE / RU
-  </button>
-</div>
 
 <!-- LOGIN -->
 <div id="login">
@@ -225,122 +220,6 @@ cursor:pointer;
 </div>
 
 <script>
-
-let lang = "ru";
-
-const t = {
-ru: {
-manager:"Кто менеджер",
-pin:"Введите PIN",
-loading:"⏳ Проверка...",
-report:"Отчет смены",
-date:"Дата",
-shift:"Смена",
-morning:"Утро",
-evening:"Вечер",
-ready:"Готовность кухни",
-reason:"Причина",
-distribution:"Распределение",
-hot:"Горячая сторона",
-cold:"Холодная сторона",
-check:"Проверяющий",
-waste:"Выброс продукции (л)",
-toggleWaste:"Показать / скрыть список",
-summary:"Описание смены",
-hints:"Подсказки",
-prep:"Заготовки",
-addWorker:"+ Добавить сотрудника",
-problems:"Проблемы",
-next:"Далее →",
-training:"Ученичество",
-back:"← Назад",
-student:"Выбор ученика",
-study:"Описание ученичества",
-send:"Отправить",
-done:"Спасибо! Отчет отправлен ✅",
-new:"Новый отчет",
-wrongPin:"Неверный PIN",
-pickDate:"Выбери дату",
-selectWorker:"Выбери сотрудника"
-},
-
-he: {
-manager:"מי המנהל",
-pin:"הזן קוד PIN",
-loading:"⏳ בודק...",
-report:"דוח משמרת",
-date:"תאריך",
-shift:"משמרת",
-morning:"בוקר",
-evening:"ערב",
-ready:"מוכנות המטבח",
-reason:"סיבה",
-distribution:"חלוקת עמדות",
-hot:"עמדה חמה",
-cold:"עמדה קרה",
-check:"בודק",
-waste:"זריקת מוצרים (ליטר)",
-toggleWaste:"הצג / הסתר רשימה",
-summary:"תיאור המשמרת",
-hints:"רמזים",
-prep:"הכנות",
-addWorker:"+ הוסף עובד",
-problems:"בעיות",
-next:"המשך →",
-training:"חניכה",
-back:"← חזרה",
-student:"בחירת חניך",
-study:"תיאור החניכה",
-send:"שלח",
-done:"תודה! הדוח נשלח ✅",
-new:"דוח חדש",
-wrongPin:"קוד שגוי",
-pickDate:"בחר תאריך",
-selectWorker:"בחר עובד"
-}
-};
-
-function toggleLang(){
-lang = lang === "ru" ? "he" : "ru";
-applyLang();
-}
-
-function applyLang(){
-
-document.querySelector("#login h2").innerText = t[lang].manager;
-document.querySelector("#pin h2").innerText = t[lang].pin;
-document.querySelector("#loading h2").innerText = t[lang].loading;
-document.querySelector("#form h2").innerText = t[lang].report;
-document.querySelector("#training h2").innerText = t[lang].training;
-document.querySelector("#done h2").innerText = t[lang].done;
-
-// labels
-document.querySelectorAll(".label")[0].innerText = t[lang].date;
-document.querySelectorAll(".label")[1].innerText = t[lang].shift;
-document.querySelectorAll(".label")[2].innerText = t[lang].ready;
-document.querySelectorAll(".label")[3].innerText = t[lang].distribution;
-document.querySelectorAll(".label")[4].innerText = t[lang].waste;
-document.querySelectorAll(".label")[5].innerText = t[lang].summary;
-document.querySelectorAll(".label")[6].innerText = t[lang].prep;
-document.querySelectorAll(".label")[7].innerText = t[lang].problems;
-document.querySelectorAll(".label")[8].innerText = t[lang].student;
-document.querySelectorAll(".label")[9].innerText = t[lang].study;
-
-// кнопки
-document.querySelector(".add-btn").innerText = t[lang].toggleWaste;
-document.querySelectorAll("button")[3].innerText = t[lang].next;
-document.querySelectorAll("button")[4].innerText = t[lang].send;
-
-// select
-shift.options[0].text = t[lang].morning;
-shift.options[1].text = t[lang].evening;
-
-// placeholder prep
-document.querySelectorAll("select").forEach(s=>{
-if(s.options[0]) s.options[0].text = t[lang].selectWorker;
-});
-
-}
   
 
 const SCRIPT_URL="https://script.google.com/macros/s/AKfycbz12ZpoxZvsXISJ2hen9FJeZBZbhy6RCnBvYsODMGn5bwAaY9KgDpvsKG30IMizlL9OoQ/exec";
@@ -414,7 +293,7 @@ if(json.status==="ok"||json.status==="created"){
 show("form");
 date.valueAsDate=new Date();
 }else{
-alert(t[lang].wrongPin);
+alert("Неверный PIN");
 state.pin="";
 updatePin();
 show("pin");
@@ -647,7 +526,7 @@ addPrep();
 
 /* NAV */
 function goTraining(){
-if(!date.value)return alert(t[lang].pickDate);
+if(!date.value)return alert("Выбери дату");
 show("training");
 }
 

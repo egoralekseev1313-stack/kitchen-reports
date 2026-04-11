@@ -10,14 +10,12 @@ body{margin:0;background:#0a0a0f;font-family:-apple-system;color:white;display:f
 h2{text-align:center;margin:20px 0;}
 
 .card{background:#15151d;padding:14px;border-radius:16px;margin-bottom:12px;}
-.label{font-size:13px;color:#ffffff;margin-bottom:6px;font-weight:600;}
+.label{font-size:13px;color:#fff;margin-bottom:6px;font-weight:600;}
 
 input,select,textarea{
 width:100%;padding:12px;border-radius:12px;border:none;
-background:#1f1f28;color:white;font-size:15px;box-sizing:border-box;margin-bottom:10px;
+background:#1f1f28;color:white;font-size:15px;margin-bottom:10px;
 }
-
-textarea{resize:none;height:90px;}
 
 button{
 width:100%;padding:14px;border:none;border-radius:14px;
@@ -29,19 +27,14 @@ color:white;font-size:16px;margin-top:10px;
 .tag.active{background:#6d5dfc;}
 .hidden{display:none;}
 
-.add-btn{margin-top:10px;background:#1a1a22;text-align:center;padding:10px;border-radius:10px;font-size:14px;color:#aaa;}
+.add-btn{background:#1a1a22;padding:10px;border-radius:10px;color:#aaa;text-align:center;}
 
-button, .add-btn, .tag{transition:0.15s;}
-button:active, .add-btn:active, .tag:active{transform:scale(0.96);opacity:0.7;}
-
-.pin-box{display:flex;justify-content:center;gap:10px;margin:20px 0;}
-.pin-cell{width:50px;height:50px;border-radius:12px;border:2px solid #333;display:flex;align-items:center;justify-content:center;}
+.pin-box{display:flex;gap:10px;justify-content:center;margin:20px 0;}
+.pin-cell{width:50px;height:50px;border:2px solid #333;border-radius:12px;display:flex;align-items:center;justify-content:center;}
 .pin-dot{width:8px;height:8px;background:white;border-radius:50%;}
 
-.pin-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;justify-items:center;}
-.pin-btn{width:70px;height:70px;border-radius:50%;background:#1c1c24;display:flex;align-items:center;justify-content:center;font-size:20px;}
-
-.back-ios{color:#8b7cff;margin-bottom:10px;cursor:pointer;}
+.pin-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.pin-btn{width:70px;height:70px;border-radius:50%;background:#1c1c24;display:flex;align-items:center;justify-content:center;}
 </style>
 </head>
 
@@ -84,71 +77,32 @@ button:active, .add-btn:active, .tag:active{transform:scale(0.96);opacity:0.7;}
 
 <div class="card">
 <div class="label">מוכנות המטבח</div>
-<select id="ready" onchange="checkReady()">
+<select id="ready">
 <option>5</option><option>4</option><option>3</option><option>2</option><option>1</option>
 </select>
 </div>
 
-<div id="lowBlock" class="card hidden">
-<div class="label">סיבה</div>
-<textarea id="lowReason"></textarea>
-<input type="file" id="lowPhoto">
+<div class="card">
+<div class="label">פסולת</div>
+<div id="wasteList"></div>
 </div>
 
 <div class="card">
-<div class="label">חלוקת עובדים</div>
-<select id="hot"><option disabled selected>עמדה חמה</option></select>
-<select id="cold"><option disabled selected>עמדה קרה</option></select>
-<select id="check"><option disabled selected>בודק</option></select>
-</div>
-
-<div class="card">
-<div class="label">פסולת (ליטר)</div>
-<div class="add-btn" onclick="toggleWaste()">הצג / הסתר</div>
-<div id="wasteList" class="hidden"></div>
-</div>
-
-<div class="card">
-<div class="label">סיכום המשמרת</div>
+<div class="label">סיכום</div>
 <textarea id="summary"></textarea>
-</div>
-
-<div class="card">
-<div class="label">הכנות</div>
-<div id="prepContainer"></div>
-<div class="add-btn" onclick="addPrep()">+ הוסף עובד</div>
 </div>
 
 <div class="card">
 <div class="label">בעיות</div>
 <textarea id="problem"></textarea>
-<input type="file" id="problemPhoto">
-</div>
-
-<button onclick="goTraining()">הבא →</button>
-
-</div>
-
-<div id="training" class="hidden">
-<h2>חניכה</h2>
-<div class="back-ios" onclick="goBack()">← חזור</div>
-
-<div class="card">
-<div class="label">בחירת עובד</div>
-<select id="student"></select>
-</div>
-
-<div class="card">
-<div class="label">תיאור החניכה</div>
-<textarea id="study"></textarea>
 </div>
 
 <button onclick="send()">שלח</button>
+
 </div>
 
 <div id="done" class="hidden">
 <h2>הדוח נשלח ✅</h2>
-<button onclick="location.reload()">דוח חדש</button>
 </div>
 
 </div>
@@ -157,10 +111,10 @@ button:active, .add-btn:active, .tag:active{transform:scale(0.96);opacity:0.7;}
 
 const SCRIPT_URL="ТВОЙ_URL";
 
-let state={user:"",pin:"",waste:{},prep:[]};
+let state={user:"",pin:"",waste:{}};
 
 function show(id){
-["login","pin","form","training","done","loading"].forEach(x=>{
+["login","pin","form","done","loading"].forEach(x=>{
 document.getElementById(x).classList.add("hidden");
 });
 document.getElementById(id).classList.remove("hidden");
@@ -173,17 +127,25 @@ updatePin();
 show("pin");
 }
 
+/* PIN */
 const pad=document.getElementById("pad");
+
 [1,2,3,4,5,6,7,8,9,"←",0].forEach(n=>{
 const b=document.createElement("div");
 b.className="pin-btn";
 b.innerText=n;
+
 b.onclick=()=>{
 if(n==="←"){state.pin=state.pin.slice(0,-1);}
 else if(state.pin.length<4){state.pin+=n;}
+
 updatePin();
-if(state.pin.length===4){checkPin();}
+
+if(state.pin.length===4){
+checkPin();
+}
 };
+
 pad.appendChild(b);
 });
 
@@ -195,10 +157,16 @@ c.innerHTML=i<state.pin.length?"<div class='pin-dot'></div>":"";
 
 async function checkPin(){
 show("loading");
-const res=await fetch(https://script.google.com/macros/s/AKfycbz12ZpoxZvsXISJ2hen9FJeZBZbhy6RCnBvYsODMGn5bwAaY9KgDpvsKG30IMizlL9OoQ/exec,{
+
+const res=await fetch(SCRIPT_URL,{
 method:"POST",
-body: JSON.stringify({type:"auth",user:state.user,pin:state.pin})
+body: JSON.stringify({
+type:"auth",
+user:state.user,
+pin:state.pin
+})
 });
+
 const json=await res.json();
 
 if(json.status==="ok"||json.status==="created"){
@@ -212,71 +180,45 @@ show("pin");
 }
 }
 
-function checkReady(){
-lowBlock.classList.toggle("hidden",ready.value>=4);
-}
+/* ВЫБРОС */
+const wasteItems=["קציצות","אורז","טחינה"];
 
-function toggleWaste(){
-wasteList.classList.toggle("hidden");
-}
-
-const wasteGroups={
-"בשר":["קציצות","חזה עוף","שווארמה"],
-"תוספות":["אורז","פירה"],
-"רטבים":["טחינה","סלסה"],
-"קינוחים":["קינוחים"]
-};
-
-Object.entries(wasteGroups).forEach(([group, products])=>{
-const title=document.createElement("div");
-title.innerText=group;
-wasteList.appendChild(title);
-
-products.forEach(p=>{
+wasteItems.forEach(p=>{
 const tag=document.createElement("div");
 tag.className="tag";
 tag.innerText=p;
-tag.onclick=()=>tag.classList.toggle("active");
+
+tag.onclick=()=>{
+tag.classList.toggle("active");
+
+if(tag.classList.contains("active")){
+state.waste[p]=1;
+}else{
+delete state.waste[p];
+}
+};
+
 wasteList.appendChild(tag);
 });
-});
 
-const prepItems=["גואקמולי","סלסה","אורז","פירה","טחינה"];
-const workers=["יגור","סטס","דניס","יעקב","אלכס"];
-
-function addPrep(){
-state.prep.push({user:"",items:[]});
-renderPrep();
-}
-
-function renderPrep(){
-prepContainer.innerHTML="";
-state.prep.forEach(block=>{
-const select=document.createElement("select");
-workers.forEach(w=>{
-const o=document.createElement("option");
-o.innerText=w;
-select.appendChild(o);
-});
-prepContainer.appendChild(select);
-});
-}
-
-addPrep();
-
-function goTraining(){
-if(!date.value)return alert("בחר תאריך");
-show("training");
-}
-
-function goBack(){show("form");}
-
+/* SEND */
 async function send(){
 show("loading");
+
 await fetch(SCRIPT_URL,{
 method:"POST",
-body:JSON.stringify({type:"report",user:state.user})
+body:JSON.stringify({
+type:"report",
+user:state.user,
+date:date.value,
+shift:shift.value,
+ready:ready.value,
+summary:summary.value,
+problem:problem.value,
+waste:state.waste
+})
 });
+
 show("done");
 }
 

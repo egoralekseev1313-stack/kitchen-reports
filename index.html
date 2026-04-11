@@ -80,6 +80,12 @@ cursor:pointer;
 <body>
 <div class="app">
 
+<div style="display:flex;justify-content:flex-end;margin-bottom:10px;">
+  <button onclick="toggleLang()" style="width:auto;padding:6px 10px;font-size:12px;">
+    HE / RU
+  </button>
+</div>
+
 <!-- LOGIN -->
 <div id="login">
 <h2>Кто менеджер</h2>
@@ -220,7 +226,32 @@ cursor:pointer;
 </div>
 
 <script>
-  
+let lang = "ru";
+
+  const t = {
+  ru: {
+    manager: "Кто менеджер",
+    pin: "Введите PIN",
+    report: "Отчет смены"
+  },
+  he: {
+    manager: "מי המנהל",
+    pin: "הזן קוד PIN",
+    report: "דוח משמרת"
+  }
+};
+
+function toggleLang(){
+  lang = lang === "ru" ? "he" : "ru";
+  applyLang();
+}
+
+function applyLang(){
+  document.querySelector("#login h2").innerText = t[lang].manager;
+  document.querySelector("#pin h2").innerText = t[lang].pin;
+  document.querySelector("#form h2").innerText = t[lang].report;
+}
+
 
 const SCRIPT_URL="https://script.google.com/macros/s/AKfycbz12ZpoxZvsXISJ2hen9FJeZBZbhy6RCnBvYsODMGn5bwAaY9KgDpvsKG30IMizlL9OoQ/exec";
 
@@ -574,6 +605,8 @@ function goBack(){
 show("form");
 }
 
+applyLang();
+  
 </script>
 </body>
 </html>

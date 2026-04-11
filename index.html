@@ -1,21 +1,28 @@
 <!DOCTYPE html>
-<html lang="he" dir="rtl">
+<html lang="ru">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="UTF-8">
 
 <style>
-body{margin:0;background:#0a0a0f;font-family:-apple-system;color:white;display:flex;justify-content:center;direction:rtl;text-align:right;}
+body{margin:0;background:#0a0a0f;font-family:-apple-system;color:white;display:flex;justify-content:center;}
 .app{width:100%;max-width:420px;padding:16px;}
 h2{text-align:center;margin:20px 0;}
 
 .card{background:#15151d;padding:14px;border-radius:16px;margin-bottom:12px;}
-.label{font-size:13px;color:#fff;margin-bottom:6px;font-weight:600;}
+.label{
+font-size:13px;
+color:#ffffff;
+margin-bottom:6px;
+font-weight:600;
+}
 
 input,select,textarea{
 width:100%;padding:12px;border-radius:12px;border:none;
-background:#1f1f28;color:white;font-size:15px;margin-bottom:10px;
+background:#1f1f28;color:white;font-size:15px;box-sizing:border-box;margin-bottom:10px;
 }
+
+textarea{resize:none;height:90px;}
 
 button{
 width:100%;padding:14px;border:none;border-radius:14px;
@@ -23,33 +30,67 @@ background:linear-gradient(135deg,#6d5dfc,#8b7cff);
 color:white;font-size:16px;margin-top:10px;
 }
 
-.tag{display:inline-block;padding:6px 10px;background:#1f1f28;border-radius:10px;margin:4px;font-size:13px;}
+.tag{
+display:inline-block;padding:6px 10px;background:#1f1f28;
+border-radius:10px;margin:4px;font-size:13px;
+}
+
 .tag.active{background:#6d5dfc;}
 .hidden{display:none;}
 
-.add-btn{background:#1a1a22;padding:10px;border-radius:10px;color:#aaa;text-align:center;}
-
-.pin-box{display:flex;gap:10px;justify-content:center;margin:20px 0;}
-.pin-cell{width:50px;height:50px;border:2px solid #333;border-radius:12px;display:flex;align-items:center;justify-content:center;}
+.pin-box{display:flex;justify-content:center;gap:10px;margin:20px 0;}
+.pin-cell{width:50px;height:50px;border-radius:12px;border:2px solid #333;display:flex;align-items:center;justify-content:center;}
 .pin-dot{width:8px;height:8px;background:white;border-radius:50%;}
 
-.pin-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
-.pin-btn{width:70px;height:70px;border-radius:50%;background:#1c1c24;display:flex;align-items:center;justify-content:center;}
+.pin-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;justify-items:center;}
+.pin-btn{width:70px;height:70px;border-radius:50%;background:#1c1c24;display:flex;align-items:center;justify-content:center;font-size:20px;}
+
+.row{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.hints-toggle.active{background:#6d5dfc;}
+
+.add-btn{
+margin-top:10px;
+background:#1a1a22;
+text-align:center;
+padding:10px;
+border-radius:10px;
+font-size:14px;
+color:#aaa;
+}
+
+button, .add-btn, .tag{
+transition:0.15s;
+}
+
+button:active, .add-btn:active, .tag:active{
+transform:scale(0.96);
+opacity:0.7;
+}
+
+.back-ios{
+display:inline-block;
+color:#8b7cff;
+font-size:15px;
+margin-bottom:10px;
+cursor:pointer;
+}
 </style>
 </head>
 
 <body>
 <div class="app">
 
+<!-- LOGIN -->
 <div id="login">
-<h2>מי המנהל</h2>
-<button onclick="selectUser('יגור')">יגור</button>
-<button onclick="selectUser('סטס')">סטס</button>
-<button onclick="selectUser('דניס')">דניס</button>
+<h2>Кто менеджер</h2>
+<button onclick="selectUser('Егор')">Егор</button>
+<button onclick="selectUser('Стас')">Стас</button>
+<button onclick="selectUser('Денис')">Денис</button>
 </div>
 
+<!-- PIN -->
 <div id="pin" class="hidden">
-<h2>הכנס קוד PIN</h2>
+<h2>Введите PIN</h2>
 <div class="pin-box">
 <div class="pin-cell"></div><div class="pin-cell"></div>
 <div class="pin-cell"></div><div class="pin-cell"></div>
@@ -57,69 +98,148 @@ color:white;font-size:16px;margin-top:10px;
 <div class="pin-pad" id="pad"></div>
 </div>
 
+<!-- LOADING -->
 <div id="loading" class="hidden">
-<h2>⏳ בודק...</h2>
+<h2>⏳ Проверка...</h2>
 </div>
 
+<!-- FORM -->
 <div id="form" class="hidden">
 
-<h2>דוח משמרת</h2>
+<h2>Отчет смены</h2>
 
 <div class="card">
-<div class="label">תאריך</div>
+<div class="label">Дата</div>
 <input type="date" id="date">
 </div>
 
 <div class="card">
-<div class="label">משמרת</div>
-<select id="shift"><option>בוקר</option><option>ערב</option></select>
+<div class="label">Смена</div>
+<select id="shift"><option>Утро</option><option>Вечер</option></select>
 </div>
 
 <div class="card">
-<div class="label">מוכנות המטבח</div>
-<select id="ready">
+<div class="label">Готовность кухни</div>
+<select id="ready" onchange="checkReady()">
 <option>5</option><option>4</option><option>3</option><option>2</option><option>1</option>
 </select>
 </div>
 
-<div class="card">
-<div class="label">פסולת</div>
-<div id="wasteList"></div>
+<div id="lowBlock" class="card hidden">
+<div class="label">Причина</div>
+<textarea id="lowReason"></textarea>
+<input type="file" id="lowPhoto">
 </div>
 
+<!-- РАСПРЕДЕЛЕНИЕ -->
 <div class="card">
-<div class="label">סיכום</div>
+<div class="label">Распределение</div>
+
+<select id="hot">
+<option disabled selected>Горячая сторона</option>
+<option>Егор</option><option>Стас</option><option>Денис</option><option>Яков</option><option>Алекс</option>
+</select>
+
+<select id="cold">
+<option disabled selected>Холодная сторона</option>
+<option>Егор</option><option>Стас</option><option>Денис</option><option>Яков</option><option>Алекс</option>
+</select>
+
+<select id="check">
+<option disabled selected>Проверяющий</option>
+<option>Егор</option><option>Стас</option><option>Денис</option><option>Яков</option><option>Алекс</option>
+</select>
+
+</div>
+
+<!-- ВЫБРОС -->
+<div class="card">
+<div class="label">Выброс продукции (л)</div>
+
+<div class="add-btn" onclick="toggleWaste()">Показать / скрыть список</div>
+
+<div id="wasteList" class="hidden"></div>
+</div>
+
+<!-- ОПИСАНИЕ -->
+<div class="card">
+<div class="label">Описание смены</div>
 <textarea id="summary"></textarea>
+
+<span id="toggleBtn" class="tag hints-toggle" onclick="toggleHints()">Подсказки</span>
+<div id="hints" class="hidden"></div>
+</div>
+
+<!-- ЗАГОТОВКИ -->
+<div class="card">
+<div class="label">Заготовки</div>
+
+<div id="prepContainer"></div>
+
+<div class="add-btn" onclick="addPrep()">+ Добавить сотрудника</div>
+</div>
+
+<!-- ПРОБЛЕМЫ -->
+<div class="card">
+<div class="label">Проблемы</div>
+<textarea id="problem"></textarea>
+<input type="file" id="problemPhoto">
+</div>
+
+<button onclick="goTraining()">Далее →</button>
+
+</div>
+
+<!-- TRAINING -->
+<div id="training" class="hidden">
+<h2>Ученичество</h2>
+<div class="back-ios" onclick="goBack()">
+← Назад
+</div>
+<div class="card">
+<div class="label">Выбор ученика</div>
+<select id="student">
+<option>Нет</option>
+<option>Егор</option><option>Стас</option><option>Денис</option><option>Яков</option><option>Алекс</option>
+</select>
 </div>
 
 <div class="card">
-<div class="label">בעיות</div>
-<textarea id="problem"></textarea>
+<div class="label">Описание ученичества</div>
+<textarea id="study"></textarea>
 </div>
 
-<button onclick="send()">שלח</button>
-
+<button onclick="send()">Отправить</button>
 </div>
 
 <div id="done" class="hidden">
-<h2>הדוח נשלח ✅</h2>
+<h2>Спасибо! Отчет отправлен ✅</h2>
+<button onclick="location.reload()">Новый отчет</button>
 </div>
 
 </div>
 
 <script>
+  
 
 const SCRIPT_URL="https://script.google.com/macros/s/AKfycbz12ZpoxZvsXISJ2hen9FJeZBZbhy6RCnBvYsODMGn5bwAaY9KgDpvsKG30IMizlL9OoQ/exec";
 
-let state={user:"",pin:"",waste:{}};
+let state={
+user:"",
+pin:"",
+waste:{},
+prep:[]
+};
 
+/* NAV */
 function show(id){
-["login","pin","form","done","loading"].forEach(x=>{
+["login","pin","form","training","done","loading"].forEach(x=>{
 document.getElementById(x).classList.add("hidden");
 });
 document.getElementById(id).classList.remove("hidden");
 }
 
+/* LOGIN */
 function selectUser(name){
 state.user=name;
 state.pin="";
@@ -173,37 +293,261 @@ if(json.status==="ok"||json.status==="created"){
 show("form");
 date.valueAsDate=new Date();
 }else{
-alert("קוד שגוי");
+alert("Неверный PIN");
 state.pin="";
 updatePin();
 show("pin");
 }
 }
 
-/* ВЫБРОС */
-const wasteItems=["קציצות","אורז","טחינה"];
+/* READY */
+function checkReady(){
+lowBlock.classList.toggle("hidden",ready.value>=4);
+}
+  
+  function toggleWaste(){
+wasteList.classList.toggle("hidden");
+}
 
-wasteItems.forEach(p=>{
+/* ВЫБРОС */
+const wasteGroups={
+"Мясо":[
+"Котлеты","Куриная Грудка","Шницелоним","Шницели","Шаурма","Бийонд"
+],
+"Гарниры":[
+"Бургул","Рис","Пюре","Колслоу","Квашенная капуста"
+],
+"Соусы":[
+"Тхина","Чимичури","Чипотле","Острый лимон","Гуакамоли",
+"Сальса","Соус Чедар","Пельпель Калуи"
+],
+"Десерты":[
+"Десерты"
+]
+};
+
+Object.entries(wasteGroups).forEach(([group, products])=>{
+
+/* ЗАГОЛОВОК */
+const title=document.createElement("div");
+title.style.margin="12px 0 6px";
+title.style.fontSize="14px";
+title.style.color="#aaa";
+title.innerText=group;
+
+wasteList.appendChild(title);
+
+/* ПРОДУКТЫ */
+products.forEach(p=>{
+
+const wrap=document.createElement("div");
+wrap.style.marginBottom="10px";
+
+/* ТЕГ */
 const tag=document.createElement("div");
 tag.className="tag";
 tag.innerText=p;
 
-tag.onclick=()=>{
-tag.classList.toggle("active");
+/* ИНПУТ */
+const input=document.createElement("input");
+input.type="number";
+input.placeholder="л";
+input.style.width="80px";
+input.classList.add("hidden");
 
-if(tag.classList.contains("active")){
-state.waste[p]=1;
+/* КЛИК */
+tag.onclick=()=>{
+
+const isActive = tag.classList.toggle("active");
+input.classList.toggle("hidden");
+
+if(!isActive){
+delete state.waste[p];
+input.value="";
+}
+
+};
+
+/* ВВОД */
+input.oninput=()=>{
+if(input.value){
+state.waste[p]=input.value;
 }else{
 delete state.waste[p];
 }
 };
 
-wasteList.appendChild(tag);
+wrap.appendChild(tag);
+wrap.appendChild(input);
+
+wasteList.appendChild(wrap);
+
 });
+
+});
+
+/* ПОДСКАЗКИ */
+const hintsArr=[
+"Большая нагрузка","Нехватка персонала","Задержки заказов","Ошибки сборки","Медленная кухня",
+"Очередь","Нет ингредиентов","Перегруз кухни","Долгое ожидание","Проблемы с поставками",
+"Не хватило заготовок","Сломалось оборудование","Проблемы с кассой","Неправильные заказы",
+"Слабая коммуникация","Сильный поток клиентов","Проблемы с доставкой","Нет упаковки",
+"Ошибки кухни","Долгое приготовление","Не хватило персонала","Перегруз на гриле",
+"Перегруз на сборке","Проблемы с чистотой","Задержка открытия","Нехватка соусов",
+"Не хватает продуктов","Проблемы с холодильником","Неправильная выдача",
+"Проблемы с учеником","Плохая организация","Слабая подготовка","Ошибки в заготовках",
+"Проблемы с температурой","Медленная работа","Нет контроля","Проблемы с качеством",
+"Перепутали заказы","Проблемы с логистикой","Плохая смена","Хорошая смена",
+"Отличная команда","Все прошло гладко","Быстрая работа","Клиенты довольны",
+"Высокий чек","Хорошая коммуникация","Чистая кухня","Все по стандарту"
+];
+
+function toggleHints(){
+const isOpen=!hints.classList.contains("hidden");
+hints.classList.toggle("hidden");
+toggleBtn.classList.toggle("active");
+
+if(!isOpen){
+hints.innerHTML="";
+hintsArr.forEach(h=>{
+const t=document.createElement("div");
+t.className="tag";
+t.innerText=h;
+t.onclick=()=>summary.value+=h+", ";
+hints.appendChild(t);
+});
+}
+}
+
+/* ЗАГОТОВКИ (фикс без дублей) */
+const prepItems=[
+"Гуакамоли",
+"Сальса",
+"Салат Колслоу",
+"Острый Лимон",
+"Пельпель Калуи",
+"Тхина",
+"Чипотле",
+"Соус Чедар",
+"Соус Бланка",
+"Соус Песто",
+"Соус Помидорный",
+"Груша",
+"Рис",
+"Пюре",
+"Овощи",
+"Капуста на салат",
+"Квашенная капуста",
+"Почистить картофель",
+"Белый лук",
+"Красный лук",
+"Овощи на кейжин",
+"Набор для кухни",
+"Разморозка мяса",
+"Разморозка теста",
+"Навести порядок на кухне",
+"Навести порядок в хол.комнате",
+"Распределение товаров"
+];
+
+const workers=["Егор","Стас","Денис","Яков","Алекс"];
+
+function addPrep(){
+state.prep.push({user:"",items:[]});
+renderPrep();
+}
+
+function renderPrep(){
+
+prepContainer.innerHTML="";
+
+state.prep.forEach((block,index)=>{
+
+const wrap=document.createElement("div");
+wrap.style.marginBottom="14px";
+
+/* SELECT */
+const select=document.createElement("select");
+
+const def=document.createElement("option");
+def.innerText="Выбери сотрудника";
+def.disabled=true;
+def.selected=!block.user;
+
+select.appendChild(def);
+
+workers.forEach(w=>{
+const o=document.createElement("option");
+o.innerText=w;
+if(block.user===w) o.selected=true;
+select.appendChild(o);
+});
+
+select.onchange=(e)=>{
+block.user=e.target.value;
+renderPrep();
+};
+
+wrap.appendChild(select);
+
+/* ТЕГИ */
+if(block.user){
+const tags=document.createElement("div");
+
+prepItems.forEach(item=>{
+const t=document.createElement("div");
+t.className="tag";
+t.innerText=item;
+
+if(block.items.includes(item)) t.classList.add("active");
+
+t.onclick=()=>{
+if(block.items.includes(item)){
+block.items=block.items.filter(i=>i!==item);
+}else{
+block.items.push(item);
+}
+renderPrep();
+};
+
+tags.appendChild(t);
+});
+
+wrap.appendChild(tags);
+}
+
+prepContainer.appendChild(wrap);
+
+});
+}
+
+/* INIT */
+addPrep();
+
+/* NAV */
+function goTraining(){
+if(!date.value)return alert("Выбери дату");
+show("training");
+}
+
+/* BASE64 */
+function toBase64(file){
+return new Promise(res=>{
+if(!file)return res("");
+const r=new FileReader();
+r.onload=()=>res(r.result.split(",")[1]);
+r.readAsDataURL(file);
+});
+}
 
 /* SEND */
 async function send(){
 show("loading");
+
+const photos={
+problem:await toBase64(problemPhoto.files[0]),
+low:await toBase64(lowPhoto.files[0])
+};
 
 await fetch(SCRIPT_URL,{
 method:"POST",
@@ -213,15 +557,25 @@ user:state.user,
 date:date.value,
 shift:shift.value,
 ready:ready.value,
+lowReason:lowReason.value,
 summary:summary.value,
 problem:problem.value,
-waste:state.waste
+waste:state.waste,
+prep:state.prep,
+student:student.value,
+study:study.value,
+photos
 })
 });
 
 show("done");
 }
+function goBack(){
+show("form");
+}
 
 </script>
 </body>
 </html>
+
+

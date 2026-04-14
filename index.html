@@ -82,7 +82,7 @@ cursor:pointer;
 
 <!-- LOGIN -->
 <div id="login">
-<h2>Кто менеджер</h2>
+<h2 data-key="whoManager">Кто менеджер</h2>
 <button onclick="selectUser('Егор')">Егор</button>
 <button onclick="selectUser('Стас')">Стас</button>
 <button onclick="selectUser('Денис')">Денис</button>
@@ -90,7 +90,7 @@ cursor:pointer;
 
 <!-- PIN -->
 <div id="pin" class="hidden">
-<h2>Введите PIN</h2>
+<h2 data-key="enterPin">Введите PIN</h2>
 <div class="pin-box">
 <div class="pin-cell"></div><div class="pin-cell"></div>
 <div class="pin-cell"></div><div class="pin-cell"></div>
@@ -100,9 +100,8 @@ cursor:pointer;
 
 <!-- LOADING -->
 <div id="loading" class="hidden">
-<h2>⏳ Проверка...</h2>
+<h2 data-key="checking">⏳ Проверка...</h2>
 </div>
-
 <!-- FORM -->
 <div id="form" class="hidden">
 
@@ -220,7 +219,76 @@ cursor:pointer;
 </div>
 
 <script>
-  
+
+let currentLang = 'he'; // сразу делаем иврит по умолчанию
+
+const t = {
+he: {
+
+  /* ОСНОВНОЕ */
+  report: "דוח משמרת",
+  whoManager: "מי המנהל",
+  enterPin: "הכנס קוד PIN",
+  checking: "בודק...",
+  next: "המשך",
+  send: "שלח",
+  back: "חזרה",
+  newReport: "דוח חדש",
+  success: "תודה! הדוח נשלח ✅",
+
+  /* ДАТА И СМЕНА */
+  date: "תאריך",
+  shift: "משמרת",
+  morning: "בוקר",
+  evening: "ערב",
+
+  /* ГОТОВНОСТЬ */
+  ready: "מוכנות המטבח וההכנות בתחילת המשמרת",
+  reason: "סיבה",
+
+  /* РАСПРЕДЕЛЕНИЕ */
+  staff: "חלוקת עמדות",
+  hot: "עמדה חמה",
+  cold: "עמדה קרה",
+  checker: "אחראי בדיקה",
+
+  /* ВЫБРОС */
+  waste: "זריקת מוצרים (ליטר)",
+  toggleWaste: "הצג / הסתר רשימה",
+
+  /* ОПИСАНИЕ */
+  summary: "תיאור המשמרת",
+  hints: "רמזים",
+
+  /* ЗАГОТОВКИ */
+  prep: "הכנות",
+  addWorker: "+ הוסף עובד",
+  selectWorker: "בחר עובד",
+
+  /* ПРОБЛЕМЫ */
+  problems: "בעיות, חוסרים ודברים לטיפול",
+
+  /* УЧЕНИК */
+  training: "חניכה",
+  selectStudent: "בחר חניך",
+  trainingDesc: "תיאור החניכה",
+
+  /* ОШИБКИ */
+  wrongPin: "קוד שגוי",
+  selectDate: "בחר תאריך"
+}
+};
+
+function applyTranslations(){
+  document.querySelectorAll("[data-key]").forEach(el=>{
+    const key = el.dataset.key;
+    if(t[currentLang][key]){
+      el.innerText = t[currentLang][key];
+    }
+  });
+
+  document.body.dir = "rtl"; // иврит справа налево
+}
 
 const SCRIPT_URL="https://script.google.com/macros/s/AKfycbz12ZpoxZvsXISJ2hen9FJeZBZbhy6RCnBvYsODMGn5bwAaY9KgDpvsKG30IMizlL9OoQ/exec";
 
@@ -237,6 +305,8 @@ function show(id){
 document.getElementById(x).classList.add("hidden");
 });
 document.getElementById(id).classList.remove("hidden");
+
+applyTranslations();
 }
 
 /* LOGIN */
@@ -293,7 +363,7 @@ if(json.status==="ok"||json.status==="created"){
 show("form");
 date.valueAsDate=new Date();
 }else{
-alert("Неверный PIN");
+alert(t[currentLang].wrongPin);
 state.pin="";
 updatePin();
 show("pin");
@@ -573,7 +643,7 @@ show("done");
 function goBack(){
 show("form");
 }
-
+applyTranslations();
 </script>
 </body>
 </html>

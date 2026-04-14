@@ -204,12 +204,12 @@ cursor:pointer;
 
 <!-- TRAINING -->
 <div id="training" class="hidden">
-<h2>Ученичество</h2>
-<div class="back-ios" onclick="goBack()">
+<h2 data-key="training">Ученичество</h2>
+<div class="back-ios" onclick="goBack()" data-key="back">
 ← Назад
 </div>
 <div class="card">
-<div class="label">Выбор ученика</div>
+<div class="label" data-key="selectStudent">Выбор ученика</div>
 <select id="student">
 <option>Нет</option>
 <option>Егор</option><option>Стас</option><option>Денис</option><option>Яков</option><option>Алекс</option>
@@ -217,16 +217,18 @@ cursor:pointer;
 </div>
 
 <div class="card">
-<div class="label">Описание ученичества</div>
+<div class="label" data-key="trainingDesc">Описание ученичества</div>
 <textarea id="study"></textarea>
 </div>
 
-<button onclick="send()">Отправить</button>
+<button onclick="send()" data-key="send">Отправить</button>
 </div>
 
 <div id="done" class="hidden">
-<h2>Спасибо! Отчет отправлен ✅</h2>
-<button onclick="location.reload()">Новый отчет</button>
+<h2 data-key="success">Спасибо! Отчет отправлен ✅</h2>
+<button onclick="location.reload()" data-key="newReport">
+Новый отчет
+</button>
 </div>
 
 </div>
@@ -288,10 +290,94 @@ he: {
 
   /* ОШИБКИ */
   wrongPin: "קוד שגוי",
-  selectDate: "בחר תאריך"
+  selectDate: "בחר תאריך",
+
+  /* 🔥 ПОДСКАЗКИ (МАССИВ) */
+  hintsArr: [
+    "עומס גבוה",
+    "חוסר בכוח אדם",
+    "עיכובים בהזמנות",
+    "טעויות בהרכבה",
+    "מטבח איטי",
+    "תור ארוך",
+    "חוסר במרכיבים",
+    "עומס במטבח",
+    "זמן המתנה ארוך",
+    "בעיות אספקה",
+    "לא היו מספיק הכנות",
+    "ציוד התקלקל",
+    "משמרת דינמית",
+    "הזמנות יצאו בזמן",
+    "תקשורת חלשה בצוות",
+    "זרימה חזקה של לקוחות",
+    "בעיות משלוחים",
+    "לקוחות אספו לאט",
+    "טעויות מצד המטבח",
+    "זמן הכנה ארוך",
+    "חוסר בכוח אדם",
+    "עומס על הגריל",
+    "עומס בהרכבה",
+    "בעיות ניקיון",
+    "עיכוב בפתיחה",
+    "חוסר ברטבים",
+    "חוסר במוצרים",
+    "בעיות במקרר",
+    "הגשה לא יפה",
+    "בעיה עם חניך",
+    "ארגון עבודה חלש",
+    "הכנה לא טובה",
+    "טעויות בהכנות",
+    "בעיות טמפרטורה בצ'יפסר",
+    "עבודה איטית במטבח",
+    "אין שליטה מצד אחמש",
+    "חלון עמוס",
+    "חם מאוד במטבח",
+    "בעיות לוגיסטיקה",
+    "משמרת חלשה",
+    "משמרת טובה",
+    "צוות מצוין",
+    "הכל עבר חלק",
+    "עבודה מהירה",
+    "לקוחות מרוצים",
+    "בעיה עם מדיח",
+    "תקשורת טובה",
+    "מטבח נקי",
+    "הכל לפי הנהלים"
+  ],
+
+  /* 🔥 ЗАГОТОВКИ (МАССИВ) */
+  prepItems: [
+    "גואקמולי",
+    "סלסה",
+    "סלט קולסלאו",
+    "לימון חריף",
+    "פלפל קלוי",
+    "טחינה",
+    "צ'יפוטלה",
+    "רוטב צ'דר",
+    "רוטב בלאנקה",
+    "רוטב פסטו",
+    "רוטב עגבניות",
+    "אגס",
+    "אורז",
+    "פירה",
+    "ירקות",
+    "כרוב לסלט",
+    "כרוב כבוש",
+    "קילוף תפוחי אדמה",
+    "בצל לבן",
+    "בצל אדום",
+    "ירקות לקייג'ן",
+    "ערכת מטבח",
+    "הפשרת בשר",
+    "הפשרת בצק",
+    "סידור המטבח",
+    "סידור חדר קירור",
+    "סידור סחורה"
+  ]
+
 }
 };
-
 function applyTranslations(){
   document.querySelectorAll("[data-key]").forEach(el=>{
     const key = el.dataset.key;
@@ -492,7 +578,7 @@ toggleBtn.classList.toggle("active");
 
 if(!isOpen){
 hints.innerHTML="";
-hintsArr.forEach(h=>{
+t[currentLang].hintsArr.forEach(h=>{
 const t=document.createElement("div");
 t.className="tag";
 t.innerText=h;
@@ -577,7 +663,7 @@ wrap.appendChild(select);
 if(block.user){
 const tags=document.createElement("div");
 
-prepItems.forEach(item=>{
+t[currentLang].prepItems.forEach(item=>{
 const t=document.createElement("div");
 t.className="tag";
 t.innerText=item;
@@ -609,7 +695,7 @@ addPrep();
 
 /* NAV */
 function goTraining(){
-if(!date.value)return alert("Выбери дату");
+if(!date.value)return alert(t[currentLang].selectDate);
 show("training");
 }
 

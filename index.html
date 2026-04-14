@@ -80,13 +80,12 @@ cursor:pointer;
 <body>
 <div class="app">
 
-
 <!-- LOGIN -->
 <div id="login">
 <h2 data-key="whoManager">Кто менеджер</h2>
-<button onclick="selectUser('Egor')" data-name="Egor"></button>
-<button onclick="selectUser('Stas')" data-name="Stas"></button>
-<button onclick="selectUser('Denis')" data-name="Denis"></button>
+<button onclick="selectUser('Егор')">Егор</button>
+<button onclick="selectUser('Стас')">Стас</button>
+<button onclick="selectUser('Денис')">Денис</button>
 </div>
 
 <!-- PIN -->
@@ -140,29 +139,17 @@ cursor:pointer;
 
 <select id="hot">
 <option disabled selected data-key="hot">Горячая сторона</option>
-<option value="Egor" data-name="Egor"></option>
-<option value="Stas" data-name="Stas"></option>
-<option value="Denis" data-name="Denis"></option>
-<option value="Yakov" data-name="Yakov"></option>
-<option value="Alex" data-name="Alex"></option>
+<option>Егор</option><option>Стас</option><option>Денис</option><option>Яков</option><option>Алекс</option>
 </select>
 
 <select id="cold">
 <option disabled selected data-key="cold">Холодная сторона</option>
-<option value="Egor" data-name="Egor"></option>
-<option value="Stas" data-name="Stas"></option>
-<option value="Denis" data-name="Denis"></option>
-<option value="Yakov" data-name="Yakov"></option>
-<option value="Alex" data-name="Alex"></option>
+<option>Егор</option><option>Стас</option><option>Денис</option><option>Яков</option><option>Алекс</option>
 </select>
 
 <select id="check">
 <option disabled selected data-key="checker">Проверяющий</option>
-<option value="Egor" data-name="Egor"></option>
-<option value="Stas" data-name="Stas"></option>
-<option value="Denis" data-name="Denis"></option>
-<option value="Yakov" data-name="Yakov"></option>
-<option value="Alex" data-name="Alex"></option>
+<option>Егор</option><option>Стас</option><option>Денис</option><option>Яков</option><option>Алекс</option>
 </select>
 
 </div>
@@ -225,11 +212,8 @@ cursor:pointer;
 <div class="label" data-key="selectStudent">Выбор ученика</div>
 <select id="student">
 <option>Нет</option>
-<option value="Egor" data-name="Egor"></option>
-<option value="Stas" data-name="Stas"></option>
-<option value="Denis" data-name="Denis"></option>
-<option value="Yakov" data-name="Yakov"></option>
-<option value="Alex" data-name="Alex"></option>
+<option>Егор</option><option>Стас</option><option>Денис</option><option>Яков</option><option>Алекс</option>
+</select>
 </div>
 
 <div class="card">
@@ -254,7 +238,6 @@ cursor:pointer;
 let currentLang = 'he'; // сразу делаем иврит по умолчанию
 
 const t = {
-
 he: {
 
   /* ОСНОВНОЕ */
@@ -309,105 +292,121 @@ he: {
   wrongPin: "קוד שגוי",
   selectDate: "בחר תאריך",
 
-  /* ИМЕНА */
-  names: {
-    Egor: "יגור",
-    Stas: "סטס",
-    Denis: "דניס",
-    Yakov: "יעקב",
-    Alex: "אלכס"
-  },
-
-  /* ПОДСКАЗКИ */
+  /* 🔥 ПОДСКАЗКИ (МАССИВ) */
   hintsArr: [
-    "עומס גבוה","חוסר בכוח אדם","עיכובים בהזמנות","טעויות בהרכבה","מטבח איטי",
-    "תור ארוך","חוסר במרכיבים","עומס במטבח","זמן המתנה ארוך","בעיות אספקה",
-    "לא היו מספיק הכנות","ציוד התקלקל","משמרת דינמית","הזמנות יצאו בזמן",
-    "תקשורת חלשה בצוות","זרימה חזקה של לקוחות","בעיות משלוחים","לקוחות אספו לאט",
-    "טעויות מצד המטבח","זמן הכנה ארוך","חוסר בכוח אדם","עומס על הגריל",
-    "עומס בהרכבה","בעיות ניקיון","עיכוב בפתיחה","חוסר ברטבים",
-    "חוסר במוצרים","בעיות במקרר","הגשה לא יפה","בעיה עם חניך",
-    "ארגון עבודה חלש","הכנה לא טובה","טעויות בהכנות","בעיות טמפרטורה בצ'יפסר",
-    "עבודה איטית במטבח","אין שליטה מצד אחמש","חלון עמוס","חם מאוד במטבח",
-    "בעיות לוגיסטיקה","משמרת חלשה","משמרת טובה","צוות מצוין",
-    "הכל עבר חלק","עבודה מהירה","לקוחות מרוצים","בעיה עם מדיח",
-    "תקשורת טובה","מטבח נקי","הכל לפי הנהלים"
+    "עומס גבוה",
+    "חוסר בכוח אדם",
+    "עיכובים בהזמנות",
+    "טעויות בהרכבה",
+    "מטבח איטי",
+    "תור ארוך",
+    "חוסר במרכיבים",
+    "עומס במטבח",
+    "זמן המתנה ארוך",
+    "בעיות אספקה",
+    "לא היו מספיק הכנות",
+    "ציוד התקלקל",
+    "משמרת דינמית",
+    "הזמנות יצאו בזמן",
+    "תקשורת חלשה בצוות",
+    "זרימה חזקה של לקוחות",
+    "בעיות משלוחים",
+    "לקוחות אספו לאט",
+    "טעויות מצד המטבח",
+    "זמן הכנה ארוך",
+    "חוסר בכוח אדם",
+    "עומס על הגריל",
+    "עומס בהרכבה",
+    "בעיות ניקיון",
+    "עיכוב בפתיחה",
+    "חוסר ברטבים",
+    "חוסר במוצרים",
+    "בעיות במקרר",
+    "הגשה לא יפה",
+    "בעיה עם חניך",
+    "ארגון עבודה חלש",
+    "הכנה לא טובה",
+    "טעויות בהכנות",
+    "בעיות טמפרטורה בצ'יפסר",
+    "עבודה איטית במטבח",
+    "אין שליטה מצד אחמש",
+    "חלון עמוס",
+    "חם מאוד במטבח",
+    "בעיות לוגיסטיקה",
+    "משמרת חלשה",
+    "משמרת טובה",
+    "צוות מצוין",
+    "הכל עבר חלק",
+    "עבודה מהירה",
+    "לקוחות מרוצים",
+    "בעיה עם מדיח",
+    "תקשורת טובה",
+    "מטבח נקי",
+    "הכל לפי הנהלים"
   ],
 
-  /* ЗАГОТОВКИ */
+  /* 🔥 ЗАГОТОВКИ (МАССИВ) */
   prepItems: [
-    "גואקמולי","סלסה","סלט קולסלאו","לימון חריף","פלפל קלוי",
-    "טחינה","צ'יפוטלה","רוטב צ'דר","רוטב בלאנקה","רוטב פסטו",
-    "רוטב עגבניות","אגס","אורז","פירה","ירקות",
-    "כרוב לסלט","כרוב כבוש","קילוף תפוחי אדמה","בצל לבן","בצל אדום",
-    "ירקות לקייג'ן","ערכת מטבח","הפשרת בשר","הפשרת בצק",
-    "סידור המטבח","סידור חדר קירור","סידור סחורה"
+    "גואקמולי",
+    "סלסה",
+    "סלט קולסלאו",
+    "לימון חריף",
+    "פלפל קלוי",
+    "טחינה",
+    "צ'יפוטלה",
+    "רוטב צ'דר",
+    "רוטב בלאנקה",
+    "רוטב פסטו",
+    "רוטב עגבניות",
+    "אגס",
+    "אורז",
+    "פירה",
+    "ירקות",
+    "כרוב לסלט",
+    "כרוב כבוש",
+    "קילוף תפוחי אדמה",
+    "בצל לבן",
+    "בצל אדום",
+    "ירקות לקייג'ן",
+    "ערכת מטבח",
+    "הפשרת בשר",
+    "הפשרת בצק",
+    "סידור המטבח",
+    "סידור חדר קירור",
+    "סידור סחורה"
   ],
-
-  /* ВЫБРОС */
   wasteGroups: {
-    "בשר": ["קציצות","חזה עוף","שניצלונים","שניצלים","שווארמה","ביונד"],
-    "תוספות": ["בורגול","אורז","פירה","קולסלאו","כרוב כבוש"],
-    "רטבים": ["טחינה","צ'ימיצ'ורי","צ'יפוטלה","לימון חריף","גואקמולי","סלסה","רוטב צ'דר","פלפל קלוי"],
-    "קינוחים": ["קינוחים"]
-  }
-
-},
-
-ru: {
-
-  report: "Отчет смены",
-  whoManager: "Кто менеджер",
-  enterPin: "Введите PIN",
-  checking: "Проверка...",
-  next: "Далее",
-  send: "Отправить",
-  back: "Назад",
-  newReport: "Новый отчет",
-  success: "Спасибо! Отчет отправлен ✅",
-
-  date: "Дата",
-  shift: "Смена",
-  morning: "Утро",
-  evening: "Вечер",
-
-  ready: "Готовность кухни",
-  reason: "Причина",
-
-  staff: "Распределение",
-  hot: "Горячая сторона",
-  cold: "Холодная сторона",
-  checker: "Проверяющий",
-
-  waste: "Выброс продукции (L)",
-  toggleWaste: "Показать / скрыть список",
-
-  summary: "Описание смены",
-  hints: "Подсказки",
-
-  prep: "Заготовки",
-  addWorker: "+ Добавить сотрудника",
-  selectWorker: "Выбери сотрудника",
-
-  problems: "Проблемы и нехватка",
-
-  training: "Ученичество",
-  selectStudent: "Выбор ученика",
-  trainingDesc: "Описание ученичества",
-
-  wrongPin: "Неверный PIN",
-  selectDate: "Выбери дату",
-
-  names: {
-    Egor: "Егор",
-    Stas: "Стас",
-    Denis: "Денис",
-    Yakov: "Яков",
-    Alex: "Алекс"
-  }
-
+  "בשר": [
+    "קציצות",
+    "חזה עוף",
+    "שניצלונים",
+    "שניצלים",
+    "שווארמה",
+    "ביונד"
+  ],
+  "תוספות": [
+    "בורגול",
+    "אורז",
+    "פירה",
+    "קולסלאו",
+    "כרוב כבוש"
+  ],
+  "רטבים": [
+    "טחינה",
+    "צ'ימיצ'ורי",
+    "צ'יפוטלה",
+    "לימון חריף",
+    "גואקמולי",
+    "סלסה",
+    "רוטב צ'דר",
+    "פלפל קלוי"
+  ],
+  "קינוחים": [
+    "קינוחים"
+  ]
 }
 
+}
 };
 function applyTranslations(){
   document.querySelectorAll("[data-key]").forEach(el=>{
@@ -417,20 +416,9 @@ function applyTranslations(){
     }
   });
 
-  // направление текста
-  document.body.dir = currentLang === "he" ? "rtl" : "ltr";
-
-  // 👇 обновляем имена
-  applyNames();
-  updateSelectNames();
+  document.body.dir = "rtl"; // иврит справа налево
 }
 
-function applyNames(){
-  document.querySelectorAll("[data-name]").forEach(el=>{
-    const key = el.dataset.name;
-    el.innerText = t[currentLang].names[key];
-  });
-}
 const SCRIPT_URL="https://script.google.com/macros/s/AKfycbz12ZpoxZvsXISJ2hen9FJeZBZbhy6RCnBvYsODMGn5bwAaY9KgDpvsKG30IMizlL9OoQ/exec";
 
 let state={
@@ -681,8 +669,7 @@ wrap.style.marginBottom="14px";
 const select=document.createElement("select");
 
 const def=document.createElement("option");
-def.innerText = t[currentLang].selectWorker;
-def.dataset.key = "selectWorker";
+def.innerText="Выбери сотрудника";
 def.disabled=true;
 def.selected=!block.user;
 
@@ -785,30 +772,11 @@ show("done");
 function goBack(){
 show("form");
 }
-
 applyTranslations();
-
-function updateSelectNames(){
-  document.querySelectorAll("select").forEach(select=>{
-    
-    // запоминаем выбранное значение
-    const currentValue = select.value;
-
-    // обновляем все option
-    select.querySelectorAll("option").forEach(opt=>{
-      const name = opt.dataset.name;
-      if(name && t[currentLang].names[name]){
-        opt.innerText = t[currentLang].names[name];
-      }
-    });
-
-    // возвращаем выбранное значение
-    select.value = currentValue;
-  });
-}
 </script>
 </body>
 </html>
+
 
 
 

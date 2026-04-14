@@ -139,7 +139,7 @@ cursor:pointer;
 
 <select id="hot">
 <option disabled selected data-key="hot">Горячая сторона</option>
-<option></option><option>Стас</option><option>Денис</option><option>Яков</option><option>Алекс</option>
+<option>Егор</option><option>Стас</option><option>Денис</option><option>Яков</option><option>Алекс</option>
 </select>
 
 <select id="cold">
@@ -375,37 +375,8 @@ he: {
     "סידור חדר קירור",
     "סידור סחורה"
   ]
-wasteGroups: {
-  "בשר": [
-    "קציצות",
-    "חזה עוף",
-    "שניצלונים",
-    "שניצלים",
-    "שווארמה",
-    "ביונד"
-  ],
-  "תוספות": [
-    "בורגול",
-    "אורז",
-    "פירה",
-    "קולסלאו",
-    "כרוב כבוש"
-  ],
-  "רטבים": [
-    "טחינה",
-    "צ'ימיצ'ורי",
-    "צ'יפוטלה",
-    "לימון חריף",
-    "גואקמולי",
-    "סלסה",
-    "רוטב צ'דר",
-    "פלפל קלוי"
-  ],
-  "קינוחים": [
-    "קינוחים"
-  ],
-}
 
+}
 };
 function applyTranslations(){
   document.querySelectorAll("[data-key]").forEach(el=>{
@@ -507,9 +478,24 @@ lowBlock.classList.toggle("hidden",ready.value>=4);
 wasteList.classList.toggle("hidden");
 }
 
+/* ВЫБРОС */
+const wasteGroups={
+"Мясо":[
+"Котлеты","Куриная Грудка","Шницелоним","Шницели","Шаурма","Бийонд"
+],
+"Гарниры":[
+"Бургул","Рис","Пюре","Колслоу","Квашенная капуста"
+],
+"Соусы":[
+"Тхина","Чимичури","Чипотле","Острый лимон","Гуакамоли",
+"Сальса","Соус Чедар","Пельпель Калуи"
+],
+"Десерты":[
+"Десерты"
+]
+};
 
-
-Object.entries(t[currentLang].wasteGroups).forEach(([group, products])=>{
+Object.entries(wasteGroups).forEach(([group, products])=>{
 
 /* ЗАГОЛОВОК */
 const title=document.createElement("div");
@@ -534,7 +520,7 @@ tag.innerText=p;
 /* ИНПУТ */
 const input=document.createElement("input");
 input.type="number";
-input.placeholder="ל";
+input.placeholder="л";
 input.style.width="80px";
 input.classList.add("hidden");
 
@@ -760,5 +746,6 @@ applyTranslations();
 </script>
 </body>
 </html>
+
 
 

@@ -139,7 +139,7 @@ cursor:pointer;
 
 <select id="hot">
 <option disabled selected data-key="hot">Горячая сторона</option>
-<option>Егор</option><option>Стас</option><option>Денис</option><option>Яков</option><option>Алекс</option>
+<option></option><option>Стас</option><option>Денис</option><option>Яков</option><option>Алекс</option>
 </select>
 
 <select id="cold">
@@ -403,7 +403,7 @@ wasteGroups: {
   ],
   "קינוחים": [
     "קינוחים"
-  ]
+  ],
 }
 
 };
@@ -509,7 +509,7 @@ wasteList.classList.toggle("hidden");
 
 
 
-Object.entries(t[currentLang].wasteGroups).forEach
+Object.entries(t[currentLang].wasteGroups).forEach(([group, products])=>{
 
 /* ЗАГОЛОВОК */
 const title=document.createElement("div");
@@ -534,7 +534,7 @@ tag.innerText=p;
 /* ИНПУТ */
 const input=document.createElement("input");
 input.type="number";
-input.placeholder="л";
+input.placeholder="ל";
 input.style.width="80px";
 input.classList.add("hidden");
 

@@ -74,9 +74,6 @@ font-size:15px;
 margin-bottom:10px;
 cursor:pointer;
 }
-#login {
-  position: relative;
-}
 </style>
 </head>
 
@@ -85,33 +82,10 @@ cursor:pointer;
 
 <!-- LOGIN -->
 <div id="login">
-<div id="langSwitch" style="
-position:absolute;
-top:20px;
-right:10px;
-display:flex;
-flex-direction:column;
-gap:6px;
-z-index:10;
-">
-  <button onclick="setLang('ru')" style="
-    width:50px;
-    padding:6px;
-    font-size:12px;
-    border-radius:8px;
-  ">RU</button>
-
-  <button onclick="setLang('he')" style="
-    width:50px;
-    padding:6px;
-    font-size:12px;
-    border-radius:8px;
-  ">HE</button>
-</div>
 <h2 data-key="whoManager">Кто менеджер</h2>
-<button onclick="selectUser('Egor')" data-name="Egor"></button>
-<button onclick="selectUser('Stas')" data-name="Stas"></button>
-<button onclick="selectUser('Denis')" data-name="Denis"></button>
+<button onclick="selectUser('Егор')">Егор</button>
+<button onclick="selectUser('Стас')">Стас</button>
+<button onclick="selectUser('Денис')">Денис</button>
 </div>
 
 <!-- PIN -->
@@ -165,29 +139,17 @@ z-index:10;
 
 <select id="hot">
 <option disabled selected data-key="hot">Горячая сторона</option>
-<option value="Egor" data-name="Egor"></option>
-<option value="Stas" data-name="Stas"></option>
-<option value="Denis" data-name="Denis"></option>
-<option value="Yakov" data-name="Yakov"></option>
-<option value="Alex" data-name="Alex"></option>
+<option>Егор</option><option>Стас</option><option>Денис</option><option>Яков</option><option>Алекс</option>
 </select>
 
 <select id="cold">
 <option disabled selected data-key="cold">Холодная сторона</option>
-<option value="Egor" data-name="Egor"></option>
-<option value="Stas" data-name="Stas"></option>
-<option value="Denis" data-name="Denis"></option>
-<option value="Yakov" data-name="Yakov"></option>
-<option value="Alex" data-name="Alex"></option>
+<option>Егор</option><option>Стас</option><option>Денис</option><option>Яков</option><option>Алекс</option>
 </select>
 
 <select id="check">
 <option disabled selected data-key="checker">Проверяющий</option>
-<option value="Egor" data-name="Egor"></option>
-<option value="Stas" data-name="Stas"></option>
-<option value="Denis" data-name="Denis"></option>
-<option value="Yakov" data-name="Yakov"></option>
-<option value="Alex" data-name="Alex"></option>
+<option>Егор</option><option>Стас</option><option>Денис</option><option>Яков</option><option>Алекс</option>
 </select>
 
 </div>
@@ -249,12 +211,8 @@ z-index:10;
 <div class="card">
 <div class="label" data-key="selectStudent">Выбор ученика</div>
 <select id="student">
-<option value="none" data-key="none"></option>
-<option value="Egor" data-name="Egor"></option>
-<option value="Stas" data-name="Stas"></option>
-<option value="Denis" data-name="Denis"></option>
-<option value="Yakov" data-name="Yakov"></option>
-<option value="Alex" data-name="Alex"></option>
+<option>Нет</option>
+<option>Егор</option><option>Стас</option><option>Денис</option><option>Яков</option><option>Алекс</option>
 </select>
 </div>
 
@@ -280,57 +238,6 @@ z-index:10;
 let currentLang = 'he'; // сразу делаем иврит по умолчанию
 
 const t = {
-ru: {
-  whoManager: "Кто менеджер",
-  enterPin: "Введите PIN",
-  checking: "Проверка...",
-  next: "Далее",
-  send: "Отправить",
-  back: "Назад",
-  newReport: "Новый отчет",
-  success: "Спасибо! Отчет отправлен ✅",
-
-  date: "Дата",
-  shift: "Смена",
-  morning: "Утро",
-  evening: "Вечер",
-
-  ready: "Готовность кухни",
-  reason: "Причина",
-
-  staff: "Распределение",
-  hot: "Горячая сторона",
-  cold: "Холодная сторона",
-  checker: "Проверяющий",
-
-  waste: "Выброс продукции (L)",
-  toggleWaste: "Показать / скрыть список",
-
-  summary: "Описание смены",
-  hints: "Подсказки",
-
-  prep: "Заготовки",
-  addWorker: "+ Добавить сотрудника",
-  selectWorker: "Выбери сотрудника",
-
-  problems: "Проблемы",
-
-  training: "Ученичество",
-  selectStudent: "Выбор ученика",
-  trainingDesc: "Описание ученичества",
-
-  wrongPin: "Неверный PIN",
-  selectDate: "Выбери дату",
-  none: "Нет",
-
-  names: {
-    Egor: "Егор",
-    Stas: "Стас",
-    Denis: "Денис",
-    Yakov: "Яков",
-    Alex: "Алекс"
-  }
-},
 he: {
 
   /* ОСНОВНОЕ */
@@ -509,33 +416,9 @@ function applyTranslations(){
     }
   });
 
-  document.body.dir = currentLang === "he" ? "rtl" : "ltr";
-
-  applyNames();
-  updateSelectNames();
+  document.body.dir = "rtl"; // иврит справа налево
 }
 
-function applyNames(){
-  document.querySelectorAll("[data-name]").forEach(el=>{
-    const key = el.dataset.name;
-    el.innerText = t[currentLang].names[key];
-  });
-}
-
-function updateSelectNames(){
-  document.querySelectorAll("select").forEach(select=>{
-    const currentValue = select.value;
-
-    select.querySelectorAll("option").forEach(opt=>{
-      const name = opt.dataset.name;
-      if(name && t[currentLang].names[name]){
-        opt.innerText = t[currentLang].names[name];
-      }
-    });
-
-    select.value = currentValue;
-  });
-}
 const SCRIPT_URL="https://script.google.com/macros/s/AKfycbz12ZpoxZvsXISJ2hen9FJeZBZbhy6RCnBvYsODMGn5bwAaY9KgDpvsKG30IMizlL9OoQ/exec";
 
 let state={
@@ -553,11 +436,6 @@ document.getElementById(x).classList.add("hidden");
 document.getElementById(id).classList.remove("hidden");
 
 applyTranslations();
-  
-const lang = document.getElementById("langSwitch");
-if(lang){
-  lang.style.display = id === "login" ? "flex" : "none";
-}
 }
 
 /* LOGIN */
@@ -771,7 +649,7 @@ const prepItems=[
 "Распределение товаров"
 ];
 
-const workers=["Egor","Stas","Denis","Yakov","Alex"];
+const workers=["Егор","Стас","Денис","Яков","Алекс"];
 
 function addPrep(){
 state.prep.push({user:"",items:[]});
@@ -791,8 +669,7 @@ wrap.style.marginBottom="14px";
 const select=document.createElement("select");
 
 const def=document.createElement("option");
-def.innerText = t[currentLang].selectWorker;
-def.dataset.key = "selectWorker";
+def.innerText="Выбери сотрудника";
 def.disabled=true;
 def.selected=!block.user;
 
@@ -800,9 +677,7 @@ select.appendChild(def);
 
 workers.forEach(w=>{
 const o=document.createElement("option");
-o.innerText = t[currentLang].names[w];
-o.value = w;
-o.dataset.name = w;
+o.innerText=w;
 if(block.user===w) o.selected=true;
 select.appendChild(o);
 });

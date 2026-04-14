@@ -238,6 +238,50 @@ cursor:pointer;
 let currentLang = 'he'; // сразу делаем иврит по умолчанию
 
 const t = {
+ru: {
+  report: "Отчет смены",
+  whoManager: "Кто менеджер",
+  enterPin: "Введите PIN",
+  checking: "Проверка...",
+  next: "Далее",
+  send: "Отправить",
+  back: "Назад",
+  newReport: "Новый отчет",
+  success: "Спасибо! Отчет отправлен ✅",
+
+  date: "Дата",
+  shift: "Смена",
+  morning: "Утро",
+  evening: "Вечер",
+
+  ready: "Готовность кухни",
+  reason: "Причина",
+
+  staff: "Распределение",
+  hot: "Горячая сторона",
+  cold: "Холодная сторона",
+  checker: "Проверяющий",
+
+  waste: "Выброс продукции (L)",
+  toggleWaste: "Показать / скрыть список",
+
+  summary: "Описание смены",
+  hints: "Подсказки",
+
+  prep: "Заготовки",
+  addWorker: "+ Добавить сотрудника",
+  selectWorker: "Выбери сотрудника",
+
+  problems: "Проблемы",
+
+  training: "Ученичество",
+  selectStudent: "Выбор ученика",
+  trainingDesc: "Описание ученичества",
+
+  wrongPin: "Неверный PIN",
+  selectDate: "Выбери дату"
+},
+
 he: {
 
   /* ОСНОВНОЕ */
@@ -416,7 +460,7 @@ function applyTranslations(){
     }
   });
 
-  document.body.dir = "rtl"; // иврит справа налево
+  document.body.dir = currentLang === "he" ? "rtl" : "ltr";
 }
 
 const SCRIPT_URL="https://script.google.com/macros/s/AKfycbz12ZpoxZvsXISJ2hen9FJeZBZbhy6RCnBvYsODMGn5bwAaY9KgDpvsKG30IMizlL9OoQ/exec";

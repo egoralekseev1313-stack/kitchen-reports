@@ -140,17 +140,29 @@ cursor:pointer;
 
 <select id="hot">
 <option disabled selected data-key="hot">Горячая сторона</option>
-<option>Егор</option><option>Стас</option><option>Денис</option><option>Яков</option><option>Алекс</option>
+<option value="Egor" data-name="Egor"></option>
+<option value="Stas" data-name="Stas"></option>
+<option value="Denis" data-name="Denis"></option>
+<option value="Yakov" data-name="Yakov"></option>
+<option value="Alex" data-name="Alex"></option>
 </select>
 
 <select id="cold">
 <option disabled selected data-key="cold">Холодная сторона</option>
-<option>Егор</option><option>Стас</option><option>Денис</option><option>Яков</option><option>Алекс</option>
+<option value="Egor" data-name="Egor"></option>
+<option value="Stas" data-name="Stas"></option>
+<option value="Denis" data-name="Denis"></option>
+<option value="Yakov" data-name="Yakov"></option>
+<option value="Alex" data-name="Alex"></option>
 </select>
 
 <select id="check">
 <option disabled selected data-key="checker">Проверяющий</option>
-<option>Егор</option><option>Стас</option><option>Денис</option><option>Яков</option><option>Алекс</option>
+<option value="Egor" data-name="Egor"></option>
+<option value="Stas" data-name="Stas"></option>
+<option value="Denis" data-name="Denis"></option>
+<option value="Yakov" data-name="Yakov"></option>
+<option value="Alex" data-name="Alex"></option>
 </select>
 
 </div>
@@ -213,8 +225,11 @@ cursor:pointer;
 <div class="label" data-key="selectStudent">Выбор ученика</div>
 <select id="student">
 <option>Нет</option>
-<option>Егор</option><option>Стас</option><option>Денис</option><option>Яков</option><option>Алекс</option>
-</select>
+<option value="Egor" data-name="Egor"></option>
+<option value="Stas" data-name="Stas"></option>
+<option value="Denis" data-name="Denis"></option>
+<option value="Yakov" data-name="Yakov"></option>
+<option value="Alex" data-name="Alex"></option>
 </div>
 
 <div class="card">
@@ -665,7 +680,8 @@ wrap.style.marginBottom="14px";
 const select=document.createElement("select");
 
 const def=document.createElement("option");
-def.innerText="Выбери сотрудника";
+def.innerText = t[currentLang].selectWorker;
+def.dataset.key = "selectWorker";
 def.disabled=true;
 def.selected=!block.user;
 

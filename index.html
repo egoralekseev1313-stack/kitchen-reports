@@ -105,47 +105,50 @@ cursor:pointer;
 <!-- FORM -->
 <div id="form" class="hidden">
 
-<h2>Отчет смены</h2>
+<h2 data-key="report">Отчет смены</h2>
 
 <div class="card">
-<div class="label">Дата</div>
+<div class="label" data-key="date">Дата</div>
 <input type="date" id="date">
 </div>
 
 <div class="card">
-<div class="label">Смена</div>
-<select id="shift"><option>Утро</option><option>Вечер</option></select>
+<div class="label" data-key="shift">Смена</div>
+<select id="shift"><option data-key="morning">Утро</option>
+<option data-key="evening">Вечер</option></select>
 </div>
 
 <div class="card">
-<div class="label">Готовность кухни и заготовок к началу смены</div>
+<div class="label" data-key="ready">
+Готовность кухни и заготовок к началу смены
+</div>
 <select id="ready" onchange="checkReady()">
 <option>5</option><option>4</option><option>3</option><option>2</option><option>1</option>
 </select>
 </div>
 
 <div id="lowBlock" class="card hidden">
-<div class="label">Причина</div>
+<div class="label" data-key="reason">Причина</div>
 <textarea id="lowReason"></textarea>
 <input type="file" id="lowPhoto">
 </div>
 
 <!-- РАСПРЕДЕЛЕНИЕ -->
 <div class="card">
-<div class="label">Распределение рабочих мест</div>
+<div class="label" data-key="staff">Распределение рабочих мест</div>
 
 <select id="hot">
-<option disabled selected>Горячая сторона</option>
+<option disabled selected data-key="hot">Горячая сторона</option>
 <option>Егор</option><option>Стас</option><option>Денис</option><option>Яков</option><option>Алекс</option>
 </select>
 
 <select id="cold">
-<option disabled selected>Холодная сторона</option>
+<option disabled selected data-key="cold">Холодная сторона</option>
 <option>Егор</option><option>Стас</option><option>Денис</option><option>Яков</option><option>Алекс</option>
 </select>
 
 <select id="check">
-<option disabled selected>Проверяющий</option>
+<option disabled selected data-key="checker">Проверяющий</option>
 <option>Егор</option><option>Стас</option><option>Денис</option><option>Яков</option><option>Алекс</option>
 </select>
 
@@ -153,39 +156,49 @@ cursor:pointer;
 
 <!-- ВЫБРОС -->
 <div class="card">
-<div class="label">Выброс продукции (л)</div>
+<div class="label" data-key="waste">Выброс продукции (L)</div>
 
-<div class="add-btn" onclick="toggleWaste()">Показать / скрыть список</div>
+<div class="add-btn" onclick="toggleWaste()" data-key="toggleWaste">
+Показать / скрыть список
+</div>
 
 <div id="wasteList" class="hidden"></div>
 </div>
 
 <!-- ОПИСАНИЕ -->
 <div class="card">
-<div class="label">Описание смены</div>
+<div class="label" data-key="summary">Описание смены</div>
 <textarea id="summary"></textarea>
 
-<span id="toggleBtn" class="tag hints-toggle" onclick="toggleHints()">Подсказки</span>
+<span id="toggleBtn" class="tag hints-toggle" data-key="hints">
+Подсказки
+</span>
 <div id="hints" class="hidden"></div>
 </div>
 
 <!-- ЗАГОТОВКИ -->
 <div class="card">
-<div class="label">Заготовки</div>
+<div class="label" data-key="prep">Заготовки</div>
 
 <div id="prepContainer"></div>
 
-<div class="add-btn" onclick="addPrep()">+ Добавить сотрудника</div>
+<div class="add-btn" data-key="addWorker">
++ Добавить сотрудника
+</div>
 </div>
 
 <!-- ПРОБЛЕМЫ -->
 <div class="card">
-<div class="label">Описание проблем, нехватка и вещи требуемые рассмотрения</div>
+<div class="label" data-key="problems">
+Описание проблем, нехватка и вещи требуемые рассмотрение
+</div>
 <textarea id="problem"></textarea>
 <input type="file" id="problemPhoto">
 </div>
 
-<button onclick="goTraining()">Далее →</button>
+<button onclick="goTraining()" data-key="next">
+Далее →
+</button>
 
 </div>
 

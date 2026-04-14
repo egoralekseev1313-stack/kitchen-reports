@@ -330,7 +330,7 @@ ru: {
     Yakov: "Яков",
     Alex: "Алекс"
   }
-}
+},
 he: {
 
   /* ОСНОВНОЕ */
@@ -791,7 +791,8 @@ wrap.style.marginBottom="14px";
 const select=document.createElement("select");
 
 const def=document.createElement("option");
-def.innerText="Выбери сотрудника";
+def.innerText = t[currentLang].selectWorker;
+def.dataset.key = "selectWorker";
 def.disabled=true;
 def.selected=!block.user;
 

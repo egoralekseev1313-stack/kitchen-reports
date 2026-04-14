@@ -83,9 +83,9 @@ cursor:pointer;
 <!-- LOGIN -->
 <div id="login">
 <h2 data-key="whoManager">Кто менеджер</h2>
-<button onclick="selectUser('Егор')">Егор</button>
-<button onclick="selectUser('Стас')">Стас</button>
-<button onclick="selectUser('Денис')">Денис</button>
+<button onclick="selectUser('Egor')" data-name="Egor"></button>
+<button onclick="selectUser('Stas')" data-name="Stas"></button>
+<button onclick="selectUser('Denis')" data-name="Denis"></button>
 </div>
 
 <!-- PIN -->
@@ -280,6 +280,13 @@ ru: {
 
   wrongPin: "Неверный PIN",
   selectDate: "Выбери дату"
+ 
+  names: {
+  Egor: "Егор",
+  Stas: "Стас",
+  Denis: "Денис",
+  Yakov: "Яков",
+  Alex: "Алекс"
 },
 
 he: {
@@ -447,7 +454,13 @@ he: {
   ],
   "קינוחים": [
     "קינוחים"
-  ]
+  ],
+    names: {
+  Egor: "יגור",
+  Stas: "סטס",
+  Denis: "דניס",
+  Yakov: "יעקב",
+  Alex: "אלכס"
 }
 
 }
@@ -461,6 +474,14 @@ function applyTranslations(){
   });
 
   document.body.dir = currentLang === "he" ? "rtl" : "ltr";
+  applyNames();
+}
+
+function applyNames(){
+  document.querySelectorAll("[data-name]").forEach(el=>{
+    const key = el.dataset.name;
+    el.innerText = t[currentLang].names[key];
+  });
 }
 
 const SCRIPT_URL="https://script.google.com/macros/s/AKfycbz12ZpoxZvsXISJ2hen9FJeZBZbhy6RCnBvYsODMGn5bwAaY9KgDpvsKG30IMizlL9OoQ/exec";

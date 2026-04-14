@@ -170,7 +170,7 @@ cursor:pointer;
 <div class="label" data-key="summary">Описание смены</div>
 <textarea id="summary"></textarea>
 
-<span id="toggleBtn" class="tag hints-toggle" data-key="hints">
+<span id="toggleBtn" class="tag hints-toggle" onclick="toggleHints()" data-key="hints">
 Подсказки
 </span>
 <div id="hints" class="hidden"></div>
@@ -182,7 +182,7 @@ cursor:pointer;
 
 <div id="prepContainer"></div>
 
-<div class="add-btn" data-key="addWorker">
+<div class="add-btn" onclick="addPrep()" data-key="addWorker">
 + Добавить сотрудника
 </div>
 </div>

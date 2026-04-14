@@ -79,6 +79,10 @@ cursor:pointer;
 
 <body>
 <div class="app">
+<div style="display:flex;gap:8px;margin-bottom:10px;">
+  <button onclick="setLang('ru')">RU</button>
+  <button onclick="setLang('he')">HE</button>
+</div>
 
 <!-- LOGIN -->
 <div id="login">
@@ -766,6 +770,10 @@ show("done");
 }
 function goBack(){
 show("form");
+}
+function setLang(lang){
+  currentLang = lang;
+  applyTranslations();
 }
 applyTranslations();
 </script>

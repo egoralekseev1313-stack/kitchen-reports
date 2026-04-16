@@ -79,10 +79,6 @@ cursor:pointer;
 
 <body>
 <div class="app">
-<div style="text-align:center;margin-bottom:10px;">
-  <button onclick="setLang('he')">עברית</button>
-  <button onclick="setLang('ru')">RU</button>
-</div>
 
 <!-- LOGIN -->
 <div id="login">
@@ -407,95 +403,7 @@ he: {
   ],
   "קינוחים": [
     "קינוחים"
-  ],
-
-ru: {
-
-  /* ОСНОВНОЕ */
-  report: "Отчет смены",
-  whoManager: "Кто менеджер",
-  enterPin: "Введите PIN",
-  checking: "Проверка...",
-  next: "Далее",
-  send: "Отправить",
-  back: "Назад",
-  newReport: "Новый отчет",
-  success: "Спасибо! Отчет отправлен ✅",
-
-  /* ДАТА И СМЕНА */
-  date: "Дата",
-  shift: "Смена",
-  morning: "Утро",
-  evening: "Вечер",
-
-  /* ГОТОВНОСТЬ */
-  ready: "Готовность кухни и заготовок к началу смены",
-  reason: "Причина",
-
-  /* РАСПРЕДЕЛЕНИЕ */
-  staff: "Распределение рабочих мест",
-  hot: "Горячая сторона",
-  cold: "Холодная сторона",
-  checker: "Проверяющий",
-
-  /* ВЫБРОС */
-  waste: "Выброс продукции (л)",
-  toggleWaste: "Показать / скрыть список",
-
-  /* ОПИСАНИЕ */
-  summary: "Описание смены",
-  hints: "Подсказки",
-
-  /* ЗАГОТОВКИ */
-  prep: "Заготовки",
-  addWorker: "+ Добавить сотрудника",
-  selectWorker: "Выбери сотрудника",
-
-  /* ПРОБЛЕМЫ */
-  problems: "Проблемы, нехватка и вопросы на рассмотрение",
-
-  /* УЧЕНИК */
-  training: "Ученичество",
-  selectStudent: "Выбор ученика",
-  trainingDesc: "Описание ученичества",
-
-  /* ОШИБКИ */
-  wrongPin: "Неверный PIN",
-  selectDate: "Выберите дату",
-
-  /* ПОДСКАЗКИ */
-  hintsArr: [
-    "Большая нагрузка","Нехватка персонала","Задержки заказов","Ошибки сборки","Медленная кухня",
-    "Очередь","Нет ингредиентов","Перегруз кухни","Долгое ожидание","Проблемы с поставками",
-    "Не хватило заготовок","Сломалось оборудование","Динамичная смена","Заказы выходили вовремя",
-    "Слабая коммуникация","Сильный поток клиентов","Проблемы с доставкой","Заказы забирали медленно",
-    "Ошибки кухни","Долгое приготовление","Не хватило персонала","Перегруз на гриле",
-    "Перегруз на сборке","Проблемы с чистотой","Задержка открытия","Нехватка соусов",
-    "Не хватает продуктов","Проблемы с холодильником","Плохая подача",
-    "Проблемы с учеником","Плохая организация","Слабая подготовка","Ошибки в заготовках",
-    "Проблемы с температурой","Медленная работа кухни","Нет контроля менеджера","Перегружено окно",
-    "Жарко на кухне","Проблемы логистики","Плохая смена","Хорошая смена",
-    "Отличная команда","Все прошло гладко","Быстрая работа","Клиенты довольны",
-    "Проблема с посудомойкой","Хорошая коммуникация","Чистая кухня","Все по стандарту"
-  ],
-
-  prepItems: [
-    "Гуакамоле","Сальса","Салат Колслоу","Острый лимон","Пельпель калуи",
-    "Тхина","Чипотле","Соус Чедар","Соус Бланка","Соус Песто",
-    "Соус томатный","Груша","Рис","Пюре","Овощи",
-    "Капуста","Квашеная капуста","Чистка картофеля","Белый лук","Красный лук",
-    "Овощи кейджин","Набор кухни","Разморозка мяса","Разморозка теста",
-    "Порядок на кухне","Порядок в холодильнике","Раскладка товара"
-  ],
-
-  wasteGroups: {
-    "Мясо": ["Котлеты","Куриная грудка","Шницели","Шаурма","Бийонд"],
-    "Гарниры": ["Булгур","Рис","Пюре","Колслоу","Квашеная капуста"],
-    "Соусы": ["Тхина","Чимичури","Чипотле","Острый лимон","Гуакамоле","Сальса","Чедар","Пельпель"],
-    "Десерты": ["Десерты"]
-  }
-
-}
+  ]
 }
 
 }
@@ -508,7 +416,7 @@ function applyTranslations(){
     }
   });
 
- document.body.dir = currentLang === "he" ? "rtl" : "ltr";
+  document.body.dir = "rtl"; // иврит справа налево
 }
 
 const SCRIPT_URL="https://script.google.com/macros/s/AKfycbz12ZpoxZvsXISJ2hen9FJeZBZbhy6RCnBvYsODMGn5bwAaY9KgDpvsKG30IMizlL9OoQ/exec";
@@ -600,63 +508,64 @@ lowBlock.classList.toggle("hidden",ready.value>=4);
 wasteList.classList.toggle("hidden");
 }
 
+/* ВЫБРОС */
+const wasteGroups={
+"Мясо":[
+"Котлеты","Куриная Грудка","Шницелоним","Шницели","Шаурма","Бийонд"
+],
+"Гарниры":[
+"Бургул","Рис","Пюре","Колслоу","Квашенная капуста"
+],
+"Соусы":[
+"Тхина","Чимичури","Чипотле","Острый лимон","Гуакамоли",
+"Сальса","Соус Чедар","Пельпель Калуи"
+],
+"Десерты":[
+"Десерты"
+]
+};
 
-function renderWaste(){
+Object.entries(t[currentLang].wasteGroups).forEach(([group, products])=>{
 
-  wasteList.innerHTML = ""; // очищаем список
+/* ЗАГОЛОВОК */
+const title=document.createElement("div");
+title.style.margin="12px 0 6px";
+title.style.fontSize="14px";
+title.style.color="#aaa";
+title.innerText=group;
 
-  Object.entries(t[currentLang].wasteGroups).forEach(([group, products])=>{
+wasteList.appendChild(title);
 
-    const title=document.createElement("div");
-    title.style.margin="12px 0 6px";
-    title.style.fontSize="14px";
-    title.style.color="#aaa";
-    title.innerText=group;
+/* ПРОДУКТЫ */
+products.forEach(p=>{
 
-    wasteList.appendChild(title);
+const wrap=document.createElement("div");
+wrap.style.marginBottom="10px";
 
-    products.forEach(p=>{
+/* ТЕГ */
+const tag=document.createElement("div");
+tag.className="tag";
+tag.innerText=p;
 
-      const wrap=document.createElement("div");
-      wrap.style.marginBottom="10px";
+/* ИНПУТ */
+const input=document.createElement("input");
+input.type="number";
+input.placeholder="L";
+input.style.width="80px";
+input.classList.add("hidden");
 
-      const tag=document.createElement("div");
-      tag.className="tag";
-      tag.innerText=p;
+/* КЛИК */
+tag.onclick=()=>{
 
-      const input=document.createElement("input");
-      input.type="number";
-      input.placeholder="L";
-      input.style.width="80px";
-      input.classList.add("hidden");
+const isActive = tag.classList.toggle("active");
+input.classList.toggle("hidden");
 
-      tag.onclick=()=>{
-        const isActive = tag.classList.toggle("active");
-        input.classList.toggle("hidden");
-
-        if(!isActive){
-          delete state.waste[p];
-          input.value="";
-        }
-      };
-
-      input.oninput=()=>{
-        if(input.value){
-          state.waste[p]=input.value;
-        }else{
-          delete state.waste[p];
-        }
-      };
-
-      wrap.appendChild(tag);
-      wrap.appendChild(input);
-
-      wasteList.appendChild(wrap);
-    });
-
-  });
-
+if(!isActive){
+delete state.waste[p];
+input.value="";
 }
+
+};
 
 /* ВВОД */
 input.oninput=()=>{
@@ -676,6 +585,21 @@ wasteList.appendChild(wrap);
 
 });
 
+/* ПОДСКАЗКИ */
+const hintsArr=[
+"Большая нагрузка","Нехватка персонала","Задержки заказов","Ошибки сборки","Медленная кухня",
+"Очередь","Нет ингредиентов","Перегруз кухни","Долгое ожидание","Проблемы с поставками",
+"Не хватило заготовок","Сломалось оборудование","Динамичная смена","Заказы выходили вовремя",
+"Слабая коммуникация между коллективом","Сильный поток клиентов","Проблемы с доставкой","Заказы забирали медленно",
+"Ошибки со стороны кухни","Долгое приготовление блюд","Не хватило персонала","Перегруз на гриле",
+"Перегруз на сборке","Проблемы с чистотой","Задержка открытия","Нехватка соусов",
+"Не хватает продуктов","Проблемы с холодильником","Не красивая выдача блюд",
+"Проблемы с учеником","Плохая организация работы","Слабая подготовка","Ошибки в заготовках",
+"Проблемы с температурой в чипсере","Медленная работа со стороны кухни","Нет контроля от Ахмаша","Перегружено окно",
+"Очень жарко на кухне","Проблемы с логистикой","Плохая смена","Хорошая смена",
+"Отличная команда","Все прошло гладко","Быстрая работа","Клиенты довольны",
+"Проблема с посудомойщиком","Хорошая коммуникация","Чистая кухня","Все по стандарту"
+];
 
 function toggleHints(){
 const isOpen=!hints.classList.contains("hidden");
@@ -694,7 +618,36 @@ hints.appendChild(t);
 }
 }
 
-
+/* ЗАГОТОВКИ (фикс без дублей) */
+const prepItems=[
+"Гуакамоли",
+"Сальса",
+"Салат Колслоу",
+"Острый Лимон",
+"Пельпель Калуи",
+"Тхина",
+"Чипотле",
+"Соус Чедар",
+"Соус Бланка",
+"Соус Песто",
+"Соус Помидорный",
+"Груша",
+"Рис",
+"Пюре",
+"Овощи",
+"Капуста на салат",
+"Квашенная капуста",
+"Почистить картофель",
+"Белый лук",
+"Красный лук",
+"Овощи на кейжин",
+"Набор для кухни",
+"Разморозка мяса",
+"Разморозка теста",
+"Навести порядок на кухне",
+"Навести порядок в хол.комнате",
+"Распределение товаров"
+];
 
 const workers=["Егор","Стас","Денис","Яков","Алекс"];
 
@@ -769,8 +722,7 @@ prepContainer.appendChild(wrap);
 
 /* INIT */
 addPrep();
-renderWaste();
-  
+
 /* NAV */
 function goTraining(){
 if(!date.value)return alert(t[currentLang].selectDate);
@@ -820,19 +772,10 @@ show("done");
 function goBack(){
 show("form");
 }
-  function setLang(lang){
-  currentLang = lang;
-  applyTranslations();
-  renderWaste();
-}
 applyTranslations();
 </script>
 </body>
 </html>
-
-
-
-
 
 
 
